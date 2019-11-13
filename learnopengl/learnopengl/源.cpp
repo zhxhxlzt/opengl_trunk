@@ -7,11 +7,27 @@
 #include<assimp/Importer.hpp>
 #include<assimp/scene.h>
 #include<assimp/postprocess.h>
-
-
+#include"Object.h"
+#include"Component.h"
+#include "GameObject.h"
+#include "Transform.h"
 using namespace std;
+using namespace yk;
+
+
 
 int main()
-{			  
+{
+	GameObject gb;
+	auto tr = gb.AddComponent<Transform>();
+
+	auto tc = gb.GetComponent<Transform>();
+
+	cout << (tr == tc) << endl;
+
+	
+
+
+	getchar();
 	return 0;
 }

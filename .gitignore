@@ -1,0 +1,4 @@
+*.vs
+/learnopengl/.vs/learnopengl/v15/ipch
+/learnopengl/Debug
+/learnopengl/learnopengl/Debug
