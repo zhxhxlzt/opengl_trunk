@@ -28,7 +28,7 @@ namespace yk
 			{
 				throw new std::exception("类型错误，不是Component的子类！");
 			}
-			std::string type_name = T().GetTypeName();
+			std::string type_name = T::type_name;
 			std::shared_ptr<T> target;
 			for (auto &com_ptr : this->m_comps)
 			{

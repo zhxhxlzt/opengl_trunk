@@ -11,11 +11,12 @@
 #define or  ||
 #define and &&
 
-// 使用此宏创建返回类型名的虚函数，用于基类指针类型匹配
+
 #define TYPE(x) \
-public: \
-	virtual std::string GetTypeName() {return #x;}	\
-private:
+private: \
+	friend class GameObject; \
+	static constexpr char type_name[] = #x; \
+	virtual std::string GetTypeName() { return #x; } \
 
 
 
@@ -24,10 +25,6 @@ namespace yk
 	class Object
 	{
 		TYPE(yk::Object);
-
-	public:
-		std::string ObjectName;
-
 
 		~Object()
 		{

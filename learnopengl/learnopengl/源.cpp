@@ -23,7 +23,12 @@ int main()
 
 	auto tc = gb.GetComponent<Transform>();
 
-	cout << (tr == tc) << endl;
+	/*cout << GameObject::type_name << endl;
+	cout << gb.GetTypeName() << endl;*/
+
+	cout << boolalpha << (tr == tc) << endl;
+
+	gb.ObjectName
 
 	
 
