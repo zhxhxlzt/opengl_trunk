@@ -11,28 +11,30 @@
 #include"Component.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Application.h"
 using namespace std;
 using namespace yk;
 
+class A
+{
+public:
+	
+};
 
+void print_v(vec3 v)
+{
+	cout << v.x << " " << v.y << " " << v.z << endl;
+}
+
+void testfunc()
+{
+	printf("running !\n");
+}
 
 int main()
 {
-	GameObject gb;
-	auto tr = gb.AddComponent<Transform>();
-
-	auto tc = gb.GetComponent<Transform>();
-
-	/*cout << GameObject::type_name << endl;
-	cout << gb.GetTypeName() << endl;*/
-
-	cout << boolalpha << (tr == tc) << endl;
-
-	gb.ObjectName
-
-	
-
-
-	getchar();
+	Application app;
+	app.StartTimer(testfunc, 1000);
+	app.run();
 	return 0;
 }
