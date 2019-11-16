@@ -7,7 +7,7 @@ namespace yk
 	using namespace std::chrono;
 	class Timer : Object
 	{
-		TYPE(Timer);
+		TYPE(yk::Timer, yk::Object);
 	private:
 		time_point<system_clock> m_prevPoint;
 		function<void()> m_callfunc;

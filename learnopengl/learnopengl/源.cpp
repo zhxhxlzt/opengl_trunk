@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Application.h"
+#include "MonoBehaviour.h"
 using namespace std;
 using namespace yk;
 
@@ -33,8 +34,12 @@ void testfunc()
 
 int main()
 {
+	auto gb = GameObject::createGameObject();
+	gb->AddComponent<MonoBehaviour>();
+	gb->AddComponent<Component>();
+
 	Application app;
-	app.StartTimer(testfunc, 1000);
+	app.StartTimer(testfunc, 3000);
 	app.run();
 	return 0;
 }

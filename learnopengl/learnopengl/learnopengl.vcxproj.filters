@@ -38,5 +38,14 @@
     <ClInclude Include="Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectMgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

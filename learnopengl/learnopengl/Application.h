@@ -7,7 +7,7 @@ namespace yk
 {
 	class Application : public Object
 	{
-		TYPE(Application);
+		TYPE(yk::Application, yk::Object);
 	private:
 		std::vector<std::shared_ptr<Timer>> m_timers;
 

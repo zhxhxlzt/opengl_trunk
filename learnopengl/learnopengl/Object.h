@@ -18,17 +18,32 @@
 
 using namespace std;
 
-#define TYPE(x) \
+#define TYPE(x, y) \
 private: \
 	friend class GameObject; \
 	static constexpr char type_name[] = #x; \
 	virtual std::string GetTypeName() { return #x; } \
+	using ParentType = y;
 
 
 namespace yk
 {
 	class Object
 	{
-		TYPE(yk::Object);
+		TYPE(yk::Object, yk::Object);
+
+	protected:
+		bool m_alive = true;
+
+	public:
+		virtual void Destroy()
+		{
+			m_alive = false;
+		}
+
+		operator bool()
+		{
+			return m_alive;
+		}
 	};
 }
