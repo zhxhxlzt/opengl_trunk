@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
 
 
@@ -22,10 +22,10 @@ namespace yk
 		{
 		}
 
-		unsigned int m_milliseconds;	// ÔÊĞíµ÷ÓÃÕß×ÔĞĞĞŞ¸ÄÏÂ´Îµ÷ÓÃµÄÊ±¼ä¼ä¸ô
-		bool m_oneshot = false;			// Ö»µ÷ÓÃÒ»´Î£¬È»ºódisable
+		unsigned int m_milliseconds;	// å…è®¸è°ƒç”¨è€…è‡ªè¡Œä¿®æ”¹ä¸‹æ¬¡è°ƒç”¨çš„æ—¶é—´é—´éš”
+		bool m_oneshot = false;			// åªè°ƒç”¨ä¸€æ¬¡ï¼Œç„¶ådisable
 		bool enabled = true;			
-		bool dead = false;				// Èç¹ûÎªtrue£¬Ôò´Ë¶¨Ê±Æ÷»á±»ÒÆ³ı
+		bool dead = false;				// å¦‚æœä¸ºtrueï¼Œåˆ™æ­¤å®šæ—¶å™¨ä¼šè¢«ç§»é™¤
 
 	private:
 		friend class Application;

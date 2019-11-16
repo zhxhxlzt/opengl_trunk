@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
 #include "Component.h"
 #include "Transform.h"
@@ -17,12 +17,12 @@ namespace yk
 		{
 			if (not std::is_base_of_v<Component, T>)
 			{
-				throw new std::exception("ÀàĞÍ´íÎó£¬²»ÊÇComponentµÄ×ÓÀà£¡");
+				throw new std::exception("ç±»å‹é”™è¯¯ï¼Œä¸æ˜¯Componentçš„å­ç±»ï¼");
 			}
 
 			if (is_same_v<Transform, T>)
 			{
-				throw new exception("²»ÔÊĞíÌí¼ÓTransform");
+				throw new exception("ä¸å…è®¸æ·»åŠ Transform");
 			}
 
 			return _AddComponent<T>(is_base_of<Behaviour, T>());
@@ -33,7 +33,7 @@ namespace yk
 		{
 			if (not std::is_base_of<Component, T>().value)
 			{
-				throw new std::exception("ÀàĞÍ´íÎó£¬²»ÊÇComponentµÄ×ÓÀà£¡");
+				throw new std::exception("ç±»å‹é”™è¯¯ï¼Œä¸æ˜¯Componentçš„å­ç±»ï¼");
 			}
 			std::string type_name = T::type_name;
 			std::shared_ptr<T> target;
@@ -63,7 +63,7 @@ namespace yk
 		{
 			if (com->GetTypeName() == Transform::type_name)
 			{
-				throw new exception("²»ÔÊĞíÉ¾³ıTransform");
+				throw new exception("ä¸å…è®¸åˆ é™¤Transform");
 			}
 			auto res = find(m_comps.begin(), m_comps.end(), com);
 			if (res != m_comps.end())
@@ -117,7 +117,7 @@ namespace yk
 		shared_ptr<Transform> m_transform;
 		shared_ptr<GameObject> m_this;
 
-		// È«¾Ö¹ÜÀí£¬ÏÈ·ÅÕâÀï·½±ãÊ¹ÓÃ£¬ºóÃæ×öĞŞ¸Ä
+		// å…¨å±€ç®¡ç†ï¼Œå…ˆæ”¾è¿™é‡Œæ–¹ä¾¿ä½¿ç”¨ï¼Œåé¢åšä¿®æ”¹
 	public:
 		static shared_ptr<GameObject> createGameObject()
 		{

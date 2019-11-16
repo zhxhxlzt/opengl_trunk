@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Object.h"
 #include "Timer.h"
 #include "GameObject.h"
@@ -6,7 +6,7 @@
 
 namespace yk
 {
-	// �ṩ�¼�ѭ��
+	// 提供事件循环
 	class Application : public Object
 	{
 		TYPE(yk::Application, yk::Object);

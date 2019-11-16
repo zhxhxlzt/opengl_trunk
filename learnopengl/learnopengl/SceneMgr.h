@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
 #include "Window.h"
 #include "Timer.h"
@@ -7,7 +7,7 @@
 
 namespace yk
 {
-	// ¹ÜÀí³¡¾°ÄÚgameobjectÉúÃüÖÜÆÚ£¬äÖÈ¾Á÷³Ì
+	// ç®¡ç†åœºæ™¯å†…gameobjectç”Ÿå‘½å‘¨æœŸï¼Œæ¸²æŸ“æµç¨‹
 	class SceneMgr : public Object
 	{
 	public:
@@ -18,7 +18,7 @@ namespace yk
 
 		void update(Timer& timer)
 		{
-			// windowÇåÀí´°¿Ú
+			// windowæ¸…ç†çª—å£
 			auto res = window.prepare();
 
 			if (not res)
@@ -28,10 +28,10 @@ namespace yk
 				return;
 			}
 
-			// ÓÉgameobjectÉÏµÄ×é¼şÈ¥½øĞĞäÖÈ¾
-			GameObject::updateGameObjects();	// ºóÃæ¼ÓÈë²»Í¬ÖÜÆÚ£¬²»Í¬½×¶Î¸üĞÂgameobject
+			// ç”±gameobjectä¸Šçš„ç»„ä»¶å»è¿›è¡Œæ¸²æŸ“
+			GameObject::updateGameObjects();	// åé¢åŠ å…¥ä¸åŒå‘¨æœŸï¼Œä¸åŒé˜¶æ®µæ›´æ–°gameobject
 
-			// Ë¢ĞÂÖ¡»º³å£¬ÊÂ¼ş
+			// åˆ·æ–°å¸§ç¼“å†²ï¼Œäº‹ä»¶
 			window.finish();
 		}
 

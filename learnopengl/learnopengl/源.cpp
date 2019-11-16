@@ -1,4 +1,4 @@
-#include<stdio.h>
+ï»¿#include<stdio.h>
 #include<vector>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
@@ -43,7 +43,7 @@ void testfunc()
 int main()
 {
 	SceneMgr scene;
-	scene.init();	// ´°¿ÚÉú³É
+	scene.init();	// çª—å£ç”Ÿæˆ
 	scene.testscene();
 	Application app;
 	app.StartTimer(bind(&SceneMgr::update, &scene, placeholders::_1));
