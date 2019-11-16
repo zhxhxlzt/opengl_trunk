@@ -20,25 +20,6 @@
 using namespace std;
 using namespace yk;
 
-class A
-{
-public:
-	static vector<int> vc;
-};
-
-vector<int> A::vc;
-
-void print_v(vec3 v)
-{
-	cout << v.x << " " << v.y << " " << v.z << endl;
-}
-
-void testfunc()
-{
-	printf("running !\n");
-}
-
-
 
 int main()
 {

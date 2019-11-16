@@ -135,9 +135,15 @@
     <ClInclude Include="RenderCom.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.hpp" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="4.2.texture.frag" />
+    <None Include="4.2.texture.vertex" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

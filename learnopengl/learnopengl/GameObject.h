@@ -87,7 +87,6 @@ namespace yk
 		template<typename T>
 		shared_ptr<T> _AddComponent(std::true_type)
 		{
-			cout << "behaviour comp" << endl;
 			std::shared_ptr<T> com_ptr = std::make_shared<T>();
 			com_ptr->attachToGameObject(m_this);
 			this->m_comps.push_back(com_ptr);
@@ -95,6 +94,7 @@ namespace yk
 			m_behaviours.push_back(com_ptr);
 			return com_ptr;
 		}
+
 		template<typename T>
 		shared_ptr<T> _AddComponent(std::false_type)
 		{
@@ -103,6 +103,7 @@ namespace yk
 			this->m_comps.push_back(com_ptr);
 			return com_ptr;
 		}
+
 		virtual void UpdateComponent()
 		{
 			for (auto& com : m_behaviours)
@@ -133,7 +134,6 @@ namespace yk
 			GameObject::s_gameObjects.push_back(gb);
 			return gb;
 		}
-
 
 		static void updateGameObjects()
 		{

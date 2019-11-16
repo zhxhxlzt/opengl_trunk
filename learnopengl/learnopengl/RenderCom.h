@@ -2,6 +2,8 @@
 
 #include "Shader.h"
 #include "MonoBehaviour.h"
+#include "Texture.h"
+
 
 namespace yk
 {
@@ -25,44 +27,68 @@ namespace yk
 			"   FragColor = vec4(ourColor, 1.0f);\n"
 			"}\n\0";
 
-		float vertices[18] = {
-			// positions         // colors
-			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
-
+		float vertices[32] = {
+			// positions          // colors           // texture coords
+			 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+			 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 		};
 
+		unsigned int indices[6] = {
+			  0, 1, 3, // first triangle
+			  1, 2, 3  // second triangle
+		};
 		Shader shader;
 
 	public:
 
 		virtual void Awake()
 		{
-			shader.init(vertexShaderSource, fragmentShaderSource);
-			unsigned int VBO, VAO;
+			shader = Shader("4.2.texture.vertex", "4.2.texture.frag");
+			/*shader.init(vertexShaderSource, fragmentShaderSource);*/
+			shader.use();
+			unsigned int VBO, VAO, EBO;
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
-			// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+			glGenBuffers(1, &EBO);
+
 			glBindVertexArray(VAO);
 
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 			// position attribute
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
 			// color attribute
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 			glEnableVertexAttribArray(1);
+			// texture coord attribute
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+			glEnableVertexAttribArray(2);
 
-			shader.use();
+			Texture tex1, tex2;
+			tex1.init();
+			tex2.init();
+
+			tex1.load("container.jpg", GL_RGB);
+			tex2.load("awesomeface.png", GL_RGBA);
+
+			tex1.use(GL_TEXTURE0);
+			tex2.use(GL_TEXTURE1);
+
+			shader.set("texture1", 0);
+			shader.set("texture2", 1);
 		}
+
 
 		virtual void Update()
 		{
-			cout << "render com update" << endl;
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 
 	};

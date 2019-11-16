@@ -13,9 +13,9 @@ namespace yk
 		Shader() = default;
 		Shader(string vShaderPath, string fShaderPath)
 		{
-			const char* vCode = loadShaderScript(vShaderPath).c_str();
-			const char* fCode = loadShaderScript(fShaderPath).c_str();
-			init(vCode, fCode);
+			auto vCode = loadShaderScript(vShaderPath);
+			auto fCode = loadShaderScript(fShaderPath);
+			init(vCode.c_str(), fCode.c_str());
 		}
 
 		void init(const char* vCode, const char* fCode)
@@ -27,11 +27,11 @@ namespace yk
 			glShaderSource(vertex, 1, &vCode, NULL);
 			glShaderSource(frag, 1, &fCode, NULL);
 
-			checkCompileErrors(vertex, "VERTEX");
-			checkCompileErrors(frag, "FRAGMENT");
-
 			glCompileShader(vertex);
 			glCompileShader(frag);
+
+			checkCompileErrors(vertex, "VERTEX");
+			checkCompileErrors(frag, "FRAGMENT");
 
 			auto ID = glCreateProgram();
 			glAttachShader(ID, vertex);
@@ -44,6 +44,13 @@ namespace yk
 			glDeleteShader(frag);
 		}
 
+		void initByPath(string vShaderPath, string fShaderPath)
+		{
+			const char* vCode = loadShaderScript(vShaderPath).c_str();
+			const char* fCode = loadShaderScript(fShaderPath).c_str();
+			init(vCode, fCode);
+		}
+		
 		void use()
 		{
 			glUseProgram(m_shaderProgram);
@@ -70,8 +77,9 @@ namespace yk
 	private:
 		string loadShaderScript(string path)
 		{
-			ofstream f(path);
-			return (stringstream() << f.rdbuf()).str();
+			ifstream f(path);
+			auto info = (stringstream() << f.rdbuf()).str();
+			return move(info);
 		}
 
 		void checkCompileErrors(unsigned int shader, std::string type)
