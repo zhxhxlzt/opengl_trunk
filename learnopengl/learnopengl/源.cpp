@@ -13,14 +13,20 @@
 #include "Transform.h"
 #include "Application.h"
 #include "MonoBehaviour.h"
+#include "Window.h"
+#include "SceneMgr.h"
+
+
 using namespace std;
 using namespace yk;
 
 class A
 {
 public:
-	
+	static vector<int> vc;
 };
+
+vector<int> A::vc;
 
 void print_v(vec3 v)
 {
@@ -32,14 +38,15 @@ void testfunc()
 	printf("running !\n");
 }
 
+
+
 int main()
 {
-	auto gb = GameObject::createGameObject();
-	gb->AddComponent<MonoBehaviour>();
-	gb->AddComponent<Component>();
-
+	SceneMgr scene;
+	scene.init();	// ´°¿ÚÉú³É
+	scene.testscene();
 	Application app;
-	app.StartTimer(testfunc, 3000);
+	app.StartTimer(bind(&SceneMgr::update, &scene, placeholders::_1));
 	app.run();
 	return 0;
 }

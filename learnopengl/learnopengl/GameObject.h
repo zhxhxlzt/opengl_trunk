@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Behaviour.h"
+#include "Timer.h"
 
 namespace yk
 {
@@ -83,7 +84,6 @@ namespace yk
 		}
 
 	private:
-		GameObject() {}
 		template<typename T>
 		shared_ptr<T> _AddComponent(std::true_type)
 		{
@@ -103,7 +103,7 @@ namespace yk
 			this->m_comps.push_back(com_ptr);
 			return com_ptr;
 		}
-		void UpdateComponent()
+		virtual void UpdateComponent()
 		{
 			for (auto& com : m_behaviours)
 			{
@@ -117,7 +117,7 @@ namespace yk
 		shared_ptr<Transform> m_transform;
 		shared_ptr<GameObject> m_this;
 
-		// 先放这里方便使用，后面做修改
+		// 全局管理，先放这里方便使用，后面做修改
 	public:
 		static shared_ptr<GameObject> createGameObject()
 		{
@@ -130,22 +130,23 @@ namespace yk
 
 			gb->m_comps.push_back(tr);
 			gb->m_transform = tr;
-			//GameObject::s_gameObjects.push_back(gb);
+			GameObject::s_gameObjects.push_back(gb);
 			return gb;
 		}
 
 
-		//	static void updateGameObjects()
-		//	{
-		//		for (auto& gb : s_gameObjects)
-		//		{
-		//			gb->UpdateComponent();
-		//		}
-		//	}
+		static void updateGameObjects()
+		{
+			for (auto& gb : s_gameObjects)
+			{
+				gb->UpdateComponent();
+			}
+		}
 
-		/*private:
-			static vector<shared_ptr<GameObject>>* s_gameObjects;*/
+	private:
+		static vector<shared_ptr<GameObject>> s_gameObjects;
 	};
-	
+
+	vector<shared_ptr<GameObject>> GameObject::s_gameObjects;
 
 }

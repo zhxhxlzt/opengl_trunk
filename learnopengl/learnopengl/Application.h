@@ -1,15 +1,18 @@
 #pragma once
 #include "Object.h"
 #include "Timer.h"
-
+#include "GameObject.h"
+#include "Window.h"
 
 namespace yk
 {
+	// 提供事件循环
 	class Application : public Object
 	{
 		TYPE(yk::Application, yk::Object);
 	private:
 		std::vector<std::shared_ptr<Timer>> m_timers;
+		vector<shared_ptr<Timer>> m_expiredTimers;
 
 	public:
 		std::shared_ptr<Timer> CreateTimer(int milliseconds)
@@ -22,7 +25,7 @@ namespace yk
 			m_timers.push_back(timer);
 		}
 
-		shared_ptr<Timer> StartTimer(function<void()> callfunc, unsigned int milliseconds)
+		shared_ptr<Timer> StartTimer(function<void(Timer&)> callfunc, unsigned int milliseconds=1000/60)
 		{
 			auto timer = new Timer(callfunc, milliseconds);
 			shared_ptr<Timer> ptr(timer);
@@ -41,13 +44,18 @@ namespace yk
 
 		void run()
 		{
-			while (true)
+			while (!shutdown)
 			{
 				for (auto &timer : m_timers)
 				{
-					timer->Update();
+					if (!timer->dead and timer->enabled)
+						timer->Update();
 				}
 			}
 		}
+
+		static bool shutdown;
 	};
+
+	bool Application::shutdown = false;
 }
