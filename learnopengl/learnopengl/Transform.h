@@ -10,11 +10,8 @@ namespace yk
 	class Transform : public Component
 	{
 		TYPE(yk::Transform, yk::Component);
-#ifdef TRANSFORM_DEBUG
-	public:
-#else
+
 	private:
-#endif
 		vec3 m_position;
 		vec3 m_rotation;
 		vec3 m_scale;
@@ -54,5 +51,17 @@ namespace yk
 			m_right = mat * vec4(m_right, 1);
 			m_up = mat * vec4(m_up, 1);
 		}
+	
+		mat4 transformMat()
+		{
+			/*trans = glm::translate(trans, vec3(0.5f, -0.5f, 0.0f));
+			trans = glm::rotate(trans, (float)glfwGetTime(), vec3(0, 0, 1));*/
+
+			auto trans = glm::lookAt(m_position, m_position + m_forward, m_up);
+			trans = glm::scale(trans, m_scale);
+			return trans;
+		}
+
+		vec3& position() { return m_position; }
 	};
 }

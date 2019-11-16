@@ -70,6 +70,12 @@ namespace yk
 			glUniform1f(loc, value);
 		}
 		
+		template<>
+		void set(const string &&name, mat4 mtx) const
+		{
+			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
+			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(mtx));
+		}
 		
 	private:
 		GLint m_shaderProgram = -1;

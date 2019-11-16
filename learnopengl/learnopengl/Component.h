@@ -3,6 +3,7 @@
 namespace yk
 {
 	class GameObject;
+	class Transform;
 	class Component : public Object
 	{
 		TYPE(yk::Component, yk::Object);
@@ -15,11 +16,24 @@ namespace yk
 
 		shared_ptr<GameObject> gameObject()
 		{
-			if (not m_gameObject.expired())
-				return m_gameObject.lock();
-			else
-				return nullptr;
+			return m_gameObject.lock();
 		}
+
+		shared_ptr<Transform> transform();
+
+		/*template<typename T>
+		shared_ptr<T> getComponent()
+		{
+			auto gb = gameObject()
+			return gb->;
+		}
+
+		template<typename T>
+		shared_ptr<T> addComponent()
+		{
+			return (gameObject())->AddComponent<T>();
+		}*/
+
 
 	private:
 		weak_ptr<GameObject> m_gameObject;

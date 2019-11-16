@@ -1,5 +1,9 @@
 #pragma once
 #include "Object.h"
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.hpp"
+#endif
 namespace yk
 {
 	enum WrapMode

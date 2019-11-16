@@ -121,6 +121,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="源.cpp" />
   </ItemGroup>
@@ -144,6 +146,10 @@
   <ItemGroup>
     <None Include="4.2.texture.frag" />
     <None Include="4.2.texture.vertex" />
+    <None Include="5.1.transform.fs" />
+    <None Include="5.1.transform.vs" />
+    <None Include="7.1.camera.fs" />
+    <None Include="7.1.camera.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

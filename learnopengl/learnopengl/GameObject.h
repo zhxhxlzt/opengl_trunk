@@ -12,6 +12,8 @@ namespace yk
 		TYPE(yk::GameObject, yk::Object);
 
 	public:
+		std::shared_ptr<Transform> transform() { return m_transform; }
+
 		template<typename T>
 		std::shared_ptr<T> AddComponent()
 		{
@@ -26,6 +28,13 @@ namespace yk
 			}
 
 			return _AddComponent<T>(is_base_of<Behaviour, T>());
+		}
+
+		template<>
+		std::shared_ptr<Transform> AddComponent()
+		{
+			m_transform = _AddComponent<Transform>(std::false_type());
+			return m_transform;
 		}
 
 		template<typename T>
@@ -120,6 +129,7 @@ namespace yk
 
 		// 全局管理，先放这里方便使用，后面做修改
 	public:
+		GameObject() {}
 		static shared_ptr<GameObject> createGameObject()
 		{
 			GameObject* gb_ptr = new GameObject;
@@ -147,6 +157,6 @@ namespace yk
 		static vector<shared_ptr<GameObject>> s_gameObjects;
 	};
 
-	vector<shared_ptr<GameObject>> GameObject::s_gameObjects;
+
 
 }

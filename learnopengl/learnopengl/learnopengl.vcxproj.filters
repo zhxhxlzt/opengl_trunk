@@ -24,6 +24,12 @@
     <ClCompile Include="glad.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -77,6 +83,18 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="4.2.texture.vertex">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="5.1.transform.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="5.1.transform.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="7.1.camera.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="7.1.camera.fs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
