@@ -134,6 +134,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="RenderCom.h" />
     <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />

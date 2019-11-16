@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <chrono>
 #include <memory>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <utility>
@@ -11,6 +13,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #define not !
 #define or  ||

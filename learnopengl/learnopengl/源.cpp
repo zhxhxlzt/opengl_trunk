@@ -47,6 +47,8 @@ int main()
 	scene.testscene();
 	Application app;
 	app.StartTimer(bind(&SceneMgr::update, &scene, placeholders::_1));
+	auto perp = glm::perspective(60, 1, 10, 20);
+
 	app.run();
 	return 0;
 }
