@@ -21,19 +21,11 @@ namespace yk
 
 		shared_ptr<Transform> transform();
 
-		/*template<typename T>
-		shared_ptr<T> getComponent()
-		{
-			auto gb = gameObject()
-			return gb->;
-		}
+		template<typename T>
+		shared_ptr<T> getComponent();
 
 		template<typename T>
-		shared_ptr<T> addComponent()
-		{
-			return (gameObject())->AddComponent<T>();
-		}*/
-
+		shared_ptr<T> addComponent();
 
 	private:
 		weak_ptr<GameObject> m_gameObject;

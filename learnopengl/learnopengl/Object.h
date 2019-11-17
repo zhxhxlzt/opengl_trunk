@@ -18,7 +18,6 @@
 #include <GLFW/glfw3.h>
 
 
-
 #define not !
 #define or  ||
 #define and &&
@@ -32,6 +31,12 @@ private: \
 	virtual std::string GetTypeName() { return #x; } \
 	using ParentType = y;
 
+
+inline ostream& operator<< (ostream& s, glm::vec3& v)
+{
+	s << v.x << " " << v.y << " " << v.z;
+	return s;
+}
 
 namespace yk
 {

@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include "Object.h"
 #include "Timer.h"
+#include "Input.h"
+
 
 namespace yk
 {
@@ -24,7 +26,6 @@ namespace yk
 				glfwTerminate();
 				return;
 			}
-
 			
 			glfwMakeContextCurrent(window);
 			glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -35,6 +36,8 @@ namespace yk
 				return;
 			}
 			glEnable(GL_DEPTH_TEST);
+
+			initCallback();
 		}
 
 		static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -47,7 +50,6 @@ namespace yk
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 				glfwSetWindowShouldClose(window, true);
 		}
-
 
 		bool prepare()
 		{
@@ -65,6 +67,7 @@ namespace yk
 		void finish()
 		{
 			glfwSwapBuffers(window);
+			Input::process();
 			glfwPollEvents();
 		}
 
@@ -74,6 +77,33 @@ namespace yk
 		}
 
 	private:
+		void initCallback()
+		{
+			glfwSetKeyCallback(window, Input::keyCallback);
+			glfwSetMouseButtonCallback(window, Input::mouseButtonCallback);
+			glfwSetScrollCallback(window, Input::scrollCallback);
+			glfwSetCursorEnterCallback(window, cursorEnterCallback);
+			glfwSetCursorPosCallback(window, cursorPositionCallback);
+		}
+
+		static void cursorEnterCallback(GLFWwindow* window, int event)
+		{
+			cursorEnter = event;
+		}
+
+		static void cursorPositionCallback(GLFWwindow* window, double x, double y)
+		{
+			if (cursorEnter == 1)
+			{
+				cursorEnter = -1;
+				Input::initCursor(x, y);
+			}
+
+			Input::cursorPositionCallback(window, x, y);
+		}
+
+	private:
 		GLFWwindow* window;
+		static int cursorEnter;
 	};
 }

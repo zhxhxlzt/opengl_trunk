@@ -21,8 +21,12 @@ namespace yk
 
 	public:
 		Transform():
-			m_scale(1, 1, 1), m_forward(vec3(0, 0, 1)), 
-			m_right(vec3(1, 0, 0)), m_up(vec3(0, 1, 0))
+			m_position(vec3(0, 0, 0)),
+			m_rotation(vec3(0, 0, 0)),
+			m_scale(vec3(1, 1, 1)),
+			m_forward(vec3(0, 0, -1)), 
+			m_right(vec3(1, 0, 0)), 
+			m_up(vec3(0, 1, 0))
 		{
 		}
 
@@ -63,5 +67,11 @@ namespace yk
 		}
 
 		vec3& position() { return m_position; }
+
+		vec3 forward() { return m_forward; }
+
+		vec3 right() { return m_right; }
+
+		vec3 up() { return m_up; }
 	};
 }

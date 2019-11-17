@@ -4,7 +4,7 @@
 #include "Timer.h"
 #include "GameObject.h"
 #include "RenderCom.h"
-
+#include "CamMove.h"
 namespace yk
 {
 	// 管理场景内gameobject生命周期，渲染流程
@@ -33,12 +33,14 @@ namespace yk
 
 			// 刷新帧缓冲，事件
 			window.finish();
+			
 		}
 
 		void testscene()
 		{
 			auto gb = GameObject::createGameObject();
 			gb->AddComponent<RenderCom>();
+			gb->AddComponent<CamMove>();
 		}
 	private:
 		Window window;
