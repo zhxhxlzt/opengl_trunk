@@ -89,6 +89,12 @@
     <ClInclude Include="CamMove.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="4.2.texture.frag">
@@ -107,6 +113,18 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="7.1.camera.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="1.colors.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="1.colors.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="1.lamp.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="1.lamp.fs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

@@ -136,6 +136,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectMgr.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MonoBehaviour.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RenderCom.h" />
@@ -148,6 +150,10 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="1.colors.fs" />
+    <None Include="1.colors.vs" />
+    <None Include="1.lamp.fs" />
+    <None Include="1.lamp.vs" />
     <None Include="4.2.texture.frag" />
     <None Include="4.2.texture.vertex" />
     <None Include="5.1.transform.fs" />
