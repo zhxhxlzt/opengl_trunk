@@ -23,9 +23,9 @@ namespace yk
 		GL_Linear_Mipmap_Linear = GL_LINEAR_MIPMAP_LINEAR
 	};
 
-	class Texture : public Object
+	class CTexture : public Object
 	{
-		TYPE(yk::Texture, yk::Object);
+		TYPE(yk::CTexture, yk::Object);
 
 	public:
 		void init(GLenum target = GL_TEXTURE_2D,

@@ -114,11 +114,10 @@ int main()
 	SceneMgr scene;
 	scene.init();	// 窗口生成
 	app.StartTimer(bind(&SceneMgr::update, &scene, placeholders::_1));
-	//scene.testscene();
+	scene.testscene();
 	
 	// 创建箱子
 	auto box = GameObject::createGameObject();
-	box->AddComponent<
 
 
 

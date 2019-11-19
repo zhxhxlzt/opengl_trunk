@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "RenderCom.h"
 #include "CamMove.h"
+#include "RenderCom2.h"
 namespace yk
 {
 	// 管理场景内gameobject生命周期，渲染流程
@@ -39,7 +40,8 @@ namespace yk
 		void testscene()
 		{
 			auto gb = GameObject::createGameObject();
-			gb->AddComponent<RenderCom>();
+			gb->AddComponent<RenderCom2>();
+			//gb->AddComponent<RenderCom>();
 			gb->AddComponent<CamMove>();
 		}
 	private:

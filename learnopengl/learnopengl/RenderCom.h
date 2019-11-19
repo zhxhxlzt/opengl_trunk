@@ -11,7 +11,8 @@ namespace yk
 	{
 
 		Shader shader;
-
+		unsigned int vao;
+		CTexture tex1, tex2;
 	public:
 
 		virtual void Awake()
@@ -87,7 +88,6 @@ namespace yk
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 			glEnableVertexAttribArray(1);
 
-			Texture tex1, tex2;
 			tex1.init();
 			tex2.init();
 
@@ -103,7 +103,7 @@ namespace yk
 			const unsigned int SCR_HEIGHT = 600;
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 			shader.set("projection", projection);
-			
+			vao = VAO;
 		}
 
 
@@ -131,7 +131,10 @@ namespace yk
 			view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 			view = transform()->transformMat();
-
+			glBindVertexArray(vao);
+			tex1.use(GL_TEXTURE0);
+			tex2.use(GL_TEXTURE1);
+			shader.use();
 			shader.set("view", view);
 
 			for (unsigned int i = 0; i < 10; i++)
