@@ -101,6 +101,9 @@
     <ClInclude Include="RenderCom2.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicDebug.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="4.2.texture.frag">
@@ -137,6 +140,18 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="1.model_loading.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="1.model_loading.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="test.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="test.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="7.1.camera.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

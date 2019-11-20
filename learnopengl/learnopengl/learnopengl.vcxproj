@@ -135,6 +135,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectMgr.h" />
+    <ClInclude Include="GraphicDebug.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
@@ -157,13 +158,17 @@
     <None Include="1.lamp.fs" />
     <None Include="1.lamp.vs" />
     <None Include="1.model_loading.fs" />
+    <None Include="1.model_loading.vert" />
     <None Include="1.model_loading.vs" />
     <None Include="4.2.texture.frag" />
     <None Include="4.2.texture.vertex" />
     <None Include="5.1.transform.fs" />
     <None Include="5.1.transform.vs" />
     <None Include="7.1.camera.fs" />
+    <None Include="7.1.camera.vert" />
     <None Include="7.1.camera.vs" />
+    <None Include="test.frag" />
+    <None Include="test.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

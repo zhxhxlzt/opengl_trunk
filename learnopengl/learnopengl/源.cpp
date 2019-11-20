@@ -22,6 +22,7 @@ using namespace yk;
 
 class BoxRenderCom : public MonoBehaviour
 {
+	TYPE(BoxRenderCom, yk::MonoBehaviour)
 private:
 	float vertices[108] = {
 		-0.5f, -0.5f, -0.5f,

@@ -65,7 +65,7 @@ namespace yk
 				  0, 1, 3, // first triangle
 				  1, 2, 3  // second triangle
 			};
-			shader = Shader("7.1.camera.vs", "7.1.camera.fs");
+			shader = Shader("7.1.camera.vert", "7.1.camera.fs");
 			/*shader.init(vertexShaderSource, fragmentShaderSource);*/
 			shader.use();
 			unsigned int VBO, VAO, EBO;

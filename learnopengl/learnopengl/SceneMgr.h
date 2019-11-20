@@ -41,7 +41,7 @@ namespace yk
 		{
 			auto gb = GameObject::createGameObject();
 			gb->AddComponent<RenderCom2>();
-			//gb->AddComponent<RenderCom>();
+			gb->AddComponent<RenderCom>();
 			gb->AddComponent<CamMove>();
 		}
 	private:
