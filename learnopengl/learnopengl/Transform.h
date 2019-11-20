@@ -13,20 +13,31 @@ namespace yk
 
 	private:
 		vec3 m_position;
-		vec3 m_rotation;
 		vec3 m_scale;
 		vec3 m_forward;
 		vec3 m_right;
 		vec3 m_up;
+		mat4 m_tranMat;
+		mat4 m_scalMat;
+		mat4 m_roteMat;
+
+		static const vec4 m_basePosition;
+		static const vec4 m_baseForward;
+		static const vec4 m_baseRight;
+		static const vec4 m_baseUp;
+		static const vec4 m_baseScale;
+		static const mat4 m_baseRotation;
 
 	public:
 		Transform():
 			m_position(vec3(0, 0, 0)),
-			m_rotation(vec3(0, 0, 0)),
 			m_scale(vec3(1, 1, 1)),
 			m_forward(vec3(0, 0, -1)), 
 			m_right(vec3(1, 0, 0)), 
-			m_up(vec3(0, 1, 0))
+			m_up(vec3(0, 1, 0)),
+			m_tranMat(m_baseRotation),
+			m_scalMat(m_baseRotation),
+			m_roteMat(m_baseRotation)
 		{
 		}
 
