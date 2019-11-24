@@ -10,7 +10,7 @@ namespace yk
 {
 	class RenderCom2 : public MonoBehaviour
 	{
-		TYPE(yk::RenderCom2, yk::MonoBehaviour)
+		TYPE(yk::RenderCom2, MonoBehaviour)
 		Shader shader;
 		Model* modelobj;
 		CTexture tex1;
@@ -54,7 +54,11 @@ namespace yk
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
 			shader.set("projection", projection);
 
-			auto view = transform()->transformMat();
+			auto tr = transform();
+
+			auto view = translate(model, vec3(0, 0, 4));
+
+			cout << view << endl;
 
 			shader.set("view", view);
 

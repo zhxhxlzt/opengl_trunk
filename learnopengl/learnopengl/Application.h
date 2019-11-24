@@ -9,7 +9,7 @@ namespace yk
 	// 提供事件循环
 	class Application : public Object
 	{
-		TYPE(yk::Application, yk::Object);
+		TYPE(yk::Application, Object);
 	private:
 		std::vector<std::shared_ptr<Timer>> m_timers;
 		vector<shared_ptr<Timer>> m_expiredTimers;
@@ -57,5 +57,5 @@ namespace yk
 		static bool shutdown;
 	};
 
-	bool Application::shutdown = false;
+	
 }

@@ -5,7 +5,7 @@ namespace yk
 {
 	class Behaviour : public Component
 	{
-		TYPE(yk::Behaviour, yk::Component)
+		TYPE(yk::Behaviour,Component)
 
 	protected:
 		bool m_enabled = true;

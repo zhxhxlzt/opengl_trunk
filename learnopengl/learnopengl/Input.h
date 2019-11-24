@@ -5,7 +5,7 @@ namespace yk
 {
 	class Input : public Object
 	{
-		TYPE(yk::Input, yk::Object);
+		TYPE(yk::Input, Object);
 	public:
 		static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
@@ -22,8 +22,8 @@ namespace yk
 		static void cursorPositionCallback(GLFWwindow* window, double x, double y)
 		{
 			////cout << "mouseX: " << x << "mouseY: " << y << endl;
-			deltaX += (x - Input::x);
-			deltaY += (y - Input::y);
+			deltaX += (Input::x - x);
+			deltaY += (Input::y - y);
 
 			Input::x = x;
 			Input::y = y;

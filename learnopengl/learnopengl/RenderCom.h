@@ -3,7 +3,7 @@
 #include "Shader.h"
 #include "MonoBehaviour.h"
 #include "Texture.h"
-//#include "Transform.h"
+#include "Transform.h"
 
 namespace yk
 {
@@ -130,7 +130,7 @@ namespace yk
 			float camZ = cos(glfwGetTime()) * radius;
 			view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-			view = transform()->transformMat();
+			view = transform()->View();
 			glBindVertexArray(vao);
 			tex1.use(GL_TEXTURE0);
 			tex2.use(GL_TEXTURE1);

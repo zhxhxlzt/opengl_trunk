@@ -7,7 +7,7 @@ namespace yk
 {
 	class Shader : public Object
 	{
-		TYPE(yk::Shader, yk::Object);
+		TYPE(yk::Shader, Object);
 
 	public:
 		Shader() = default;
@@ -46,9 +46,9 @@ namespace yk
 
 		void initByPath(string vShaderPath, string fShaderPath)
 		{
-			const char* vCode = loadShaderScript(vShaderPath).c_str();
-			const char* fCode = loadShaderScript(fShaderPath).c_str();
-			init(vCode, fCode);
+			auto vCode = loadShaderScript(vShaderPath);
+			auto fCode = loadShaderScript(fShaderPath);
+			init(vCode.c_str(), fCode.c_str());
 		}
 		
 		void use()
@@ -64,14 +64,14 @@ namespace yk
 		}
 
 		template<>
-		void set(const string &&name, float value) const
+		void set<float>(const string &&name, float value) const
 		{
 			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
 			glUniform1f(loc, value);
 		}
 		
 		template<>
-		void set(const string &&name, mat4 mtx) const
+		void set(const string &&name, glm::mat4 mtx) const
 		{
 			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(mtx));

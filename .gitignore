@@ -1,9 +1,15 @@
 .vs
+/learnopengl/.vs
 /learnopengl/.vs/learnopengl/v15/ipch
 /learnopengl/Debug
+/learnopengl/test
+/learnopengl/Release
+/learnopengl/learnopengl/Release
 /learnopengl/learnopengl/Debug
 learnopengl/.vs/learnopengl/v15/Browse.VC.db
 learnopengl/.vs/learnopengl/v15/.suo
 learnopengl/.vs/learnopengl/v15/Browse.VC.db
 learnopengl/.vs/learnopengl/v15/.suo
 learnopengl/learnopengl/learnopengl.vcxproj.user
+learnopengl/.vs/learnopengl/v15/.suo
+learnopengl/.vs/learnopengl/v15/Browse.VC.db

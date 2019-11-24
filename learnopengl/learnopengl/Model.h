@@ -5,103 +5,21 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "stb_image.hpp"
+#include "Mesh.h"
+#include "Texture.h"
 
 using namespace glm;
 using namespace Assimp;
 
-struct Vertex
-{
-	vec3 position;
-	vec3 normal;
-	vec2 texCoord;
-	vec3 tangent;
-	vec3 bitangent;
-};
 
-struct Texture
-{
-	unsigned int id;
-	string type;
-	aiString path;
-};
 namespace yk
 {
-	class Mesh : public Object
-	{
-		TYPE(yk::Mesh, yk::Object)
-	public:
-		vector<Vertex> vertices;
-		vector<unsigned int> indices;
-		vector<Texture> textures;
-		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures) :
-			vertices(vertices), indices(indices), textures(textures)
-		{
-			setupMesh();
-		}
-		void draw(Shader shader)
-		{
-			unsigned int diffuseNr = 1;
-			unsigned int specularNr = 1;
-			for (unsigned int i = 0; i < textures.size(); i++)
-			{
-				string number;
-				string name = textures[i].type;
-				if (name == "texture_diffuse")
-					number = to_string(diffuseNr++);
-				else if (name == "texture_specular")
-					number = to_string(specularNr++);
-
-				auto unistr = (name + number);
-				shader.set((name + number), i);
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, textures[i].id);
-			}
-			glBindVertexArray(m_vao);
-			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-			glActiveTexture(GL_TEXTURE0);
-		}
-
-	private:
-		unsigned int m_vao, m_vbo, m_ebo;
-		void setupMesh()
-		{
-			glGenVertexArrays(1, &m_vao);
-			glGenBuffers(1, &m_vbo);
-			glGenBuffers(1, &m_ebo);
-
-			glBindVertexArray(m_vao);
-			
-			glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),&vertices[0], 
-				GL_STATIC_DRAW);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-				&indices[0], GL_STATIC_DRAW);
-
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-
-			glEnableVertexAttribArray(1);
-			auto offset = offsetof(Vertex, normal);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-
-			glEnableVertexAttribArray(2);
-			offset = offsetof(Vertex, texCoord);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
-
-			glBindVertexArray(0);
-		}
-	};
-
 	class Model : public Object
 	{
-		TYPE(yk::Model, yk::Object);
+		TYPE(yk::Model, Object);
 
 	public:
-		Model(string path)
+		Model(string path):Object()
 		{
 			Assimp::Importer importer;
 			const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | 
@@ -128,6 +46,17 @@ namespace yk
 		{
 			return meshes[i];
 		}
+		vector<Mesh> getMeshes()
+		{
+			return meshes;
+		}
+
+		static Model Actor()
+		{
+			auto model = new Model("model/nanosuit.obj");
+			return *model;
+		}
+
 	private:
 		vector<Mesh> meshes;
 		string directory;
@@ -235,7 +164,7 @@ namespace yk
 				if (!skip)
 				{
 					Texture texture;
-					texture.id = TextureFromFile(str.C_Str(), directory);
+					texture.id = CTexture::TextureFromFile(str.C_Str(), directory);
 					texture.type = tpname;
 					texture.path = str.C_Str();
 					textures.push_back(texture);
@@ -245,45 +174,76 @@ namespace yk
 			}
 			return textures;
 		}
-
-		static unsigned int TextureFromFile(const char *path, const string &directory)
+	
+	public:
+		static shared_ptr<Mesh> box()
 		{
-			string filename = string(path);
-			filename = directory + '/' + filename;
+			vector<float> posVec = {
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+				 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-			unsigned int textureID;
-			glGenTextures(1, &textureID);
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-			int width, height, nrComponents;
-			unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-			if (data)
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+			};
+
+			vector<Vertex> verts;
+			vector<unsigned int> indices;
+			for (size_t i = 0; i < posVec.size() / 5; i++)
 			{
-				GLenum format;
-				if (nrComponents == 1)
-					format = GL_RED;
-				else if (nrComponents == 3)
-					format = GL_RGB;
-				else if (nrComponents == 4)
-					format = GL_RGBA;
-
-				glBindTexture(GL_TEXTURE_2D, textureID);
-				glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-				glGenerateMipmap(GL_TEXTURE_2D);
-
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-				stbi_image_free(data);
-			}
-			else
-			{
-				std::cout << "Texture failed to load at path: " << path << std::endl;
-				stbi_image_free(data);
+				Vertex v;
+				v.position.x = posVec[i];
+				v.position.y = posVec[i + 1];
+				v.position.z = posVec[i + 2];
+				v.texCoord.x = posVec[i + 3];
+				v.texCoord.y = posVec[i + 4];
+				verts.push_back(v);
+				indices.push_back(i);
 			}
 
-			return textureID;
+			CTexture ctex;
+			ctex.load("container.jpg", GL_RGB);
+			Texture tex;
+			tex.id = ctex.getTextureID();
+			tex.type = "texture_diffuse";
+			tex.path = "";
+
+			return make_shared<Mesh>(verts, indices, vector<Texture>({ tex }));
 		}
-	};
+};
 }

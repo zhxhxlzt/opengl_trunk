@@ -4,18 +4,29 @@
 #include "Transform.h"
 #include "Behaviour.h"
 #include "Timer.h"
+#include "Camera.h"
+#include "MonoBehaviour.h"
+#include "ModelFilter.h"
+#include "ModelRenderer.h"
+
 
 namespace yk
 {
 	class GameObject : public Object
 	{
-		TYPE(yk::GameObject, yk::Object);
-
+		TYPE(yk::GameObject, Object);
 	public:
+		GameObject() :Object()
+		{
+			// todo 这里执行会造成在SceneMgr中创建GameObject时出现没有提示的异常
+			//m_this = shared_ptr<GameObject>(this);
+			//m_transform = make_shared<Transform>();
+			//m_transform->attachToGameObject(m_this);
+		}
 		std::shared_ptr<Transform> transform() { return m_transform; }
 
 		template<typename T>
-		std::shared_ptr<T> AddComponent()
+		shared_ptr<T> AddComponent()
 		{
 			if (not std::is_base_of_v<Component, T>)
 			{
@@ -30,15 +41,8 @@ namespace yk
 			return _AddComponent<T>(is_base_of<Behaviour, T>());
 		}
 
-		template<>
-		std::shared_ptr<Transform> AddComponent()
-		{
-			m_transform = _AddComponent<Transform>(std::false_type());
-			return m_transform;
-		}
-
 		template<typename T>
-		std::shared_ptr<T> GetComponent()
+		shared_ptr<T> GetComponent()
 		{
 			if (not std::is_base_of<Component, T>().value)
 			{
@@ -46,19 +50,38 @@ namespace yk
 			}
 			std::string type_name = T::type_name;
 			std::shared_ptr<T> target;
-			for (auto &com_ptr : this->m_comps)
+			for (auto com_ptr : this->m_comps)
 			{
-				if (com_ptr->GetTypeName() == type_name)
+				// 使用这个每次耗时约2600纳秒
+				/*if (com_ptr->GetTypeName() == type_name)
 				{
 					target = std::static_pointer_cast<T>(com_ptr);
 					break;
-				}
+				}*/
+
+				// 使用这个每次耗时约770纳秒，且可判断能否转成基类
+				target = dynamic_pointer_cast<T>(com_ptr);
+				if (target)
+					break;
 			}
 			return target;
 		}
 
+		template<>
+		shared_ptr<Transform> AddComponent()
+		{
+			return m_transform;
+		}
+
+		template<>
+		shared_ptr<Transform> GetComponent()
+		{
+			return m_transform;
+		}
+
 		void Destroy()
 		{
+			m_this.reset();
 			m_alive = false;
 			for (auto& com : m_behaviours)
 			{
@@ -92,6 +115,13 @@ namespace yk
 			}
 		}
 
+		virtual void UpdateComponent()
+		{
+			for (auto& com : m_behaviours)
+			{
+				com->Update();
+			}
+		}
 	private:
 		template<typename T>
 		shared_ptr<T> _AddComponent(std::true_type)
@@ -113,50 +143,21 @@ namespace yk
 			return com_ptr;
 		}
 
-		virtual void UpdateComponent()
-		{
-			for (auto& com : m_behaviours)
-			{
-				com->Update();
-			}
-		}
-
 	private:
-		std::vector<std::shared_ptr<Component>> m_comps;
-		vector<shared_ptr<Behaviour>> m_behaviours;
-		shared_ptr<Transform> m_transform;
-		shared_ptr<GameObject> m_this;
+		std::vector<std::shared_ptr<Component>>		m_comps;
+		vector<shared_ptr<Behaviour>>				m_behaviours;
+		shared_ptr<Transform>						m_transform;
+		shared_ptr<GameObject>						m_this;
 
-		// 全局管理，先放这里方便使用，后面做修改
+	// STATIC
 	public:
-		GameObject() {}
-		static shared_ptr<GameObject> createGameObject()
+		static shared_ptr<GameObject> Create()
 		{
-			GameObject* gb_ptr = new GameObject;
-			shared_ptr<GameObject> gb(gb_ptr);
+			shared_ptr<GameObject> gb = make_shared<GameObject>();
 			gb->m_this = gb;
-
-			auto tr = make_shared<Transform>();
-			tr->attachToGameObject(gb);
-
-			gb->m_comps.push_back(tr);
-			gb->m_transform = tr;
-			GameObject::s_gameObjects.push_back(gb);
+			gb->m_transform = make_shared<Transform>();
+			gb->m_transform->attachToGameObject(gb);
 			return gb;
 		}
-
-		static void updateGameObjects()
-		{
-			for (auto& gb : s_gameObjects)
-			{
-				gb->UpdateComponent();
-			}
-		}
-
-	private:
-		static vector<shared_ptr<GameObject>> s_gameObjects;
 	};
-
-
-
 }

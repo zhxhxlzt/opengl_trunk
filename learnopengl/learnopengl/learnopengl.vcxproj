@@ -73,6 +73,10 @@
     <IncludePath>$(ProjectDir)\..\..\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\..\..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)\..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\..\..\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -104,6 +108,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,29 +126,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="ModelRenderer.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderMgr.cpp" />
+    <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Behaviour.h" />
+    <ClInclude Include="BoxCom.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CamMove.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectMgr.h" />
     <ClInclude Include="GraphicDebug.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelFilter.h" />
+    <ClInclude Include="ModelRenderer.h" />
     <ClInclude Include="MonoBehaviour.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RenderCom.h" />
     <ClInclude Include="RenderCom2.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderMgr.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.hpp" />
@@ -164,11 +186,19 @@
     <None Include="4.2.texture.vertex" />
     <None Include="5.1.transform.fs" />
     <None Include="5.1.transform.vs" />
+    <None Include="6.2.coordinate_systems.fs" />
+    <None Include="6.2.coordinate_systems.vs" />
     <None Include="7.1.camera.fs" />
     <None Include="7.1.camera.vert" />
     <None Include="7.1.camera.vs" />
+    <None Include="assimp-vc140-mt.dll" />
     <None Include="test.frag" />
     <None Include="test.vert" />
+    <None Include="test1.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="awesomeface.png" />
+    <Image Include="container.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

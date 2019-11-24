@@ -10,7 +10,7 @@ namespace yk
 {
 	class Window : public Object
 	{
-		TYPE(yk::Window, yk::Object)
+		TYPE(yk::Window, Object)
 	public:
 		void init()
 		{
@@ -74,6 +74,15 @@ namespace yk
 		void terminate()
 		{
 			glfwTerminate();
+		}
+
+		void SetCursorEnable(bool enabled)
+		{
+			if (enabled)
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			else
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		}
 
 	private:

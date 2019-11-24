@@ -1,9 +1,6 @@
 #pragma once
 #include "Object.h"
-#ifndef STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.hpp"
-#endif
+#include "Mesh.h"
 namespace yk
 {
 	enum WrapMode
@@ -25,7 +22,7 @@ namespace yk
 
 	class CTexture : public Object
 	{
-		TYPE(yk::CTexture, yk::Object);
+		TYPE(yk::CTexture, Object);
 
 	public:
 		void init(GLenum target = GL_TEXTURE_2D,
@@ -41,23 +38,7 @@ namespace yk
 			glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag_filter);
 		}
 
-		void load(string path, unsigned int rgbMode = GL_RGB, GLenum target = GL_TEXTURE_2D)
-		{
-			glBindTexture(target, m_texture);
-			int width, height, nrChannels;
-			stbi_set_flip_vertically_on_load(true);
-			unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
-			if (data)
-			{
-				glTexImage2D(target, 0, rgbMode, width, height, 0, rgbMode, GL_UNSIGNED_BYTE, data);
-				glGenerateMipmap(target);
-			}
-			else
-			{
-				std::cout << "Failed to load texture" << std::endl;
-			}
-			stbi_image_free(data);
-		}
+		void load(string path, unsigned int rgbMode = GL_RGB, GLenum target = GL_TEXTURE_2D);
 
 		void use(GLuint index, GLenum target = GL_TEXTURE_2D)
 		{
@@ -66,6 +47,9 @@ namespace yk
 		}
 
 		GLuint getTextureID() { return m_texture; }
+
+		static unsigned int TextureFromFile(const char *path, const string &directory);
+		
 
 	private:
 		GLuint m_texture;

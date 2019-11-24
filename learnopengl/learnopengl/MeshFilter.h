@@ -6,7 +6,7 @@ namespace yk
 {
 	class MeshFilter : public Component
 	{
-		TYPE(yk::MeshFilter, yk::Component);
+		TYPE(yk::MeshFilter, Component);
 
 	public:
 		shared_ptr<Mesh> mesh;
