@@ -31,6 +31,9 @@ namespace yk
 			return m_transform.lock();
 		}
 
+		// 在此物体渲染前调用
+		virtual void OnRendering() {}
+
 		template<typename T>
 		inline shared_ptr<T> GetComponent();
 

@@ -58,6 +58,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -128,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="FrameBufferCom.h" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Input.cpp" />
@@ -184,6 +186,8 @@
     <None Include="1.model_loading.vs" />
     <None Include="4.2.texture.frag" />
     <None Include="4.2.texture.vertex" />
+    <None Include="5.1.framebuffers_screen.fs" />
+    <None Include="5.1.framebuffers_screen.vs" />
     <None Include="5.1.transform.fs" />
     <None Include="5.1.transform.vs" />
     <None Include="6.2.coordinate_systems.fs" />
@@ -191,7 +195,6 @@
     <None Include="7.1.camera.fs" />
     <None Include="7.1.camera.vert" />
     <None Include="7.1.camera.vs" />
-    <None Include="assimp-vc140-mt.dll" />
     <None Include="test.frag" />
     <None Include="test.vert" />
     <None Include="test1.vert" />

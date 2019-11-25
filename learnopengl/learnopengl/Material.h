@@ -22,7 +22,8 @@ namespace yk
 		}
 		Shader shader() { return m_shader; }
 		Texture mainTex() { return m_mainTexture; }
-
+		void SetShader(Shader shader) { m_shader = shader; }
+		void SetMainTex(Texture tex) { m_mainTexture = tex; }
 	private:
 		Shader m_shader;
 		Texture m_mainTexture;

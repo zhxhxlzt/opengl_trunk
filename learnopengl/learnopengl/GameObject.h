@@ -10,6 +10,7 @@
 #include "ModelRenderer.h"
 
 
+
 namespace yk
 {
 	class GameObject : public Object
@@ -38,7 +39,7 @@ namespace yk
 				throw new exception("不允许添加Transform");
 			}
 
-			return _AddComponent<T>(is_base_of<Behaviour, T>());
+			return _AddComponent<T>(is_base_of<MonoBehaviour, T>());
 		}
 
 		template<typename T>
@@ -50,7 +51,7 @@ namespace yk
 			}
 			std::string type_name = T::type_name;
 			std::shared_ptr<T> target;
-			for (auto com_ptr : this->m_comps)
+			for (auto &com_ptr : this->m_comps)
 			{
 				// 使用这个每次耗时约2600纳秒
 				/*if (com_ptr->GetTypeName() == type_name)
@@ -77,6 +78,20 @@ namespace yk
 		shared_ptr<Transform> GetComponent()
 		{
 			return m_transform;
+		}
+
+		template<typename T> 
+		vector<shared_ptr<T>> GetComponents()
+		{
+			vector<shared_ptr<T>> tarComps;
+			shared_ptr<T> target;
+			for (auto &com_ptr in m_comps)
+			{
+				target = dynamic_pointer_cast<T>(com_ptr);
+				if (target)
+					tarComps.push_back(target);
+			}
+			return tarComps;
 		}
 
 		void Destroy()

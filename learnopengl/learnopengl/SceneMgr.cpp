@@ -10,7 +10,7 @@
 #include "CamMove.h"
 #include "BoxCom.h"
 #include "ModelFilter.h"
-
+#include "FrameBufferCom.h"
 using namespace yk;
 shared_ptr<Scene> SceneMgr::m_curScene = nullptr;
 
@@ -54,6 +54,47 @@ void SceneMgr::load(shared_ptr<Scene> scene)
 //}
 
 
+void SetQuadMesh(shared_ptr<MeshFilter> filter)
+{
+	auto mesh = make_shared<Mesh>();
+	auto filter = make_shared<MeshFilter>();
+	
+	vector<vec3> verts = {
+		vec3(0, 0, 0),
+		vec3(1, 0, 0),
+		vec3(1, 1, 0),
+		vec3(0, 1, 0),
+	};
+
+	vector<unsigned int> ind = {
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		Vertex v;
+		v.position = verts[i];
+		mesh->AddVert(move(v));
+	}
+
+	mesh->AddIndices(ind);
+	filter->mesh = mesh;
+}
+
+shared_ptr<Material> GetMat()
+{
+	Shader s = Shader("5.1.framebuffers_screen.vs", "5.1.framebuffers_screen.fs");
+	auto mat = make_shared<Material>(s);
+	return mat;
+}
+
+void SetMat(shared_ptr<MeshRenderer> render)
+{
+	auto mat = GetMat();
+	render->setMaterial(mat);
+}
+
 shared_ptr<Scene> SceneMgr::testScene()
 {
 	// 创建并设置当前场景
@@ -82,14 +123,26 @@ shared_ptr<Scene> SceneMgr::testScene()
 
 	auto mainCamera = CreateGameObject();
 	mainCamera->transform()->position() = vec3(0, 7, 15);
+	auto camMove = mainCamera->AddComponent<CamMove>();
 	auto camComp = mainCamera->AddComponent<Camera>();
 	camComp->SetFov(110.0f);
 	camComp->SetNear(0.01f);
 	camComp->SetFar(100.0f);
-
-	auto camMove = mainCamera->AddComponent<CamMove>();
-
 	scene->SetMainCamera(camComp);
+
+	// 控制离屏渲染的对象
+	auto renderObj = CreateGameObject();
+	auto frameCom = renderObj->AddComponent<FrameBufferCom>();
+	auto meshFilter = renderObj->AddComponent<MeshFilter>();
+	auto meshRender = renderObj->AddComponent<MeshRenderer>();
+	SetQuadMesh(meshFilter);
+	SetMat(meshRender);
+
+	Texture t;
+	t.id = frameCom->tex;
+	t.type = "texture_diffuse";
+	meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
+
 	return scene;
 }
 

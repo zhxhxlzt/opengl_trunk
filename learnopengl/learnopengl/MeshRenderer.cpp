@@ -16,5 +16,6 @@ void MeshRenderer::Rendering()
 		tar_mesh = mesh_filter->sharedMesh;
 
 	auto shader = material()->shader();
+	shader.use();
 	tar_mesh->draw(shader);
 }

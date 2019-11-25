@@ -77,7 +77,12 @@ namespace yk
 			setupMesh();
 		}
 
-		void AddVerts(vector<Vertex> verts)
+		void AddVert(const Vertex &&v)
+		{
+			vertices.push_back(move(v));
+		}
+
+		void AddVerts(const vector<Vertex> verts)
 		{
 			if (verts.size() > 0)
 			{
@@ -85,7 +90,7 @@ namespace yk
 				vertDirty = true;
 			}
 		}
-		void AddIndices(vector<unsigned int> indicesArray)
+		void AddIndices(const vector<unsigned int> &indicesArray)
 		{
 			if (indicesArray.size() > 0)
 			{

@@ -42,7 +42,15 @@ namespace yk
 				auto render = p->GetComponent<Renderer>();
 				if (render)
 				{
+					// 渲染前调用
+					for (auto &com_ptr : p->GetComponents<Component>())
+						com_ptr->OnRendering();
+
 					render->Rendering();
+
+					// 渲染后调用
+					for (auto &com_ptr : p->GetComponents<MonoBehaviour>())
+						com_ptr->LateUpdate();
 				}
 			}
 
