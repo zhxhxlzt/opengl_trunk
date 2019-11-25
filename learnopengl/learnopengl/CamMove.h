@@ -21,7 +21,7 @@ namespace yk
 		virtual void Awake()
 		{
 			//glfwSetInputMode(&(*RenderMgr::window()), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			RenderMgr::window()->SetCursorEnable(false);
+			//RenderMgr::window()->SetCursorEnable(false);
 		}
 
 		virtual void Update()
@@ -114,9 +114,15 @@ namespace yk
 				cout << "factor: " << factor << endl;
 			}
 
+			if (Input::getkeydown(GLFW_MOUSE_BUTTON_1))
+			{
+				RenderMgr::window()->SetCursorEnable(false);
+			}
+
 			if (Input::getkeyup(GLFW_MOUSE_BUTTON_1))
 			{
-				cout << "mouse released!" << endl;
+				//cout << "mouse released!" << endl;
+				RenderMgr::window()->SetCursorEnable(true);
 			}
 
 			if (Input::getkeydown(GLFW_KEY_ENTER))

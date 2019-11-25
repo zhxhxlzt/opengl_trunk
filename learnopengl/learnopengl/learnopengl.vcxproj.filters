@@ -72,6 +72,9 @@
     <ClCompile Include="FrameBufferCom.h">
       <Filter>code\exercise</Filter>
     </ClCompile>
+    <ClCompile Include="FrameBufferCom.cpp">
+      <Filter>code\exercise</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">

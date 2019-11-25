@@ -25,6 +25,7 @@ namespace yk
 		TYPE(yk::CTexture, Object);
 
 	public:
+		CTexture() { init(); }
 		void init(GLenum target = GL_TEXTURE_2D,
 			WrapMode wrap_s = GL_Repeat,
 			WrapMode wrap_t = GL_Repeat,

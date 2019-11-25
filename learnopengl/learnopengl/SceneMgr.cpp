@@ -57,13 +57,19 @@ void SceneMgr::load(shared_ptr<Scene> scene)
 void SetQuadMesh(shared_ptr<MeshFilter> filter)
 {
 	auto mesh = make_shared<Mesh>();
-	auto filter = make_shared<MeshFilter>();
 	
 	vector<vec3> verts = {
-		vec3(0, 0, 0),
-		vec3(1, 0, 0),
+		vec3(-1, -1, 0),
+		vec3(1, -1, 0),
 		vec3(1, 1, 0),
-		vec3(0, 1, 0),
+		vec3(-1, 1, 0),
+	};
+
+	vector<vec2> texcoords = {
+		vec2(0, 0),
+		vec2(1, 0),
+		vec2(1, 1),
+		vec2(0, 1)
 	};
 
 	vector<unsigned int> ind = {
@@ -75,6 +81,7 @@ void SetQuadMesh(shared_ptr<MeshFilter> filter)
 	{
 		Vertex v;
 		v.position = verts[i];
+		v.texCoord = texcoords[i];
 		mesh->AddVert(move(v));
 	}
 
@@ -140,6 +147,10 @@ shared_ptr<Scene> SceneMgr::testScene()
 
 	Texture t;
 	t.id = frameCom->tex;
+	CTexture ct;
+	//auto id = ct.TextureFromFile("awesomeface.png", "");
+	/*ct.load("awesomeface.png", GL_RGBA);
+	t.id = ct.getTextureID();*/
 	t.type = "texture_diffuse";
 	meshFilter->mesh->textures.push_back(move(t));	// ÉèÖÃÌùÍ¼ÎªÑÕÉ«»º³å
 

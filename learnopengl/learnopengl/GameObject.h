@@ -85,7 +85,7 @@ namespace yk
 		{
 			vector<shared_ptr<T>> tarComps;
 			shared_ptr<T> target;
-			for (auto &com_ptr in m_comps)
+			for (auto &com_ptr : m_comps)
 			{
 				target = dynamic_pointer_cast<T>(com_ptr);
 				if (target)
@@ -119,7 +119,7 @@ namespace yk
 			}
 		}
 
-		void Destroy(shared_ptr<Behaviour> com)
+		void Destroy(shared_ptr<MonoBehaviour> com)
 		{
 			auto res = find(m_behaviours.begin(), m_behaviours.end(), com);
 			if (res != m_behaviours.end())
@@ -160,7 +160,7 @@ namespace yk
 
 	private:
 		std::vector<std::shared_ptr<Component>>		m_comps;
-		vector<shared_ptr<Behaviour>>				m_behaviours;
+		vector<shared_ptr<MonoBehaviour>>				m_behaviours;
 		shared_ptr<Transform>						m_transform;
 		shared_ptr<GameObject>						m_this;
 

@@ -29,6 +29,8 @@ namespace yk
 	{
 		TYPE(yk::Mesh, Object)
 	public:
+		float offset = 0.01f;
+		float cor = 0.01f;
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures;
@@ -55,15 +57,25 @@ namespace yk
 				else if (name == "texture_specular")
 					number = to_string(specularNr++);
 
-				auto unistr = (name + number);
-				shader.set((name + number), i);
+				
+				
+				//glCheckError();
+
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, textures[i].id);
+				auto unistr = (name + number);
+				shader.set(move(unistr), i);
+				glCheckError();
 			}
+			/*cor += offset;
+			if (cor >= 1)
+				cor = 0.01f;
+			shader.set("cor", cor);
+			shader.set("texture_diffuse1", textures[0].id);*/
 			glBindVertexArray(m_vao);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
-			//glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE0);
 		}
 
 		void CombineMeshes(vector<Mesh> meshes)

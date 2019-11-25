@@ -2,6 +2,7 @@
 #include "MeshFilter.h"
 #include "Mesh.h"
 #include "GameObject.h"
+#include "GraphicDebug.h"
 using namespace yk;
 
 void MeshRenderer::Rendering()

@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="FrameBufferCom.cpp" />
     <ClCompile Include="FrameBufferCom.h" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
