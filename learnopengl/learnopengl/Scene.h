@@ -41,6 +41,14 @@ namespace yk
 			return false;
 		}
 
+		void SetCubeMap(shared_ptr<GameObject> cubeMapObj) { m_cubemapObj = cubeMapObj; }
+
+		shared_ptr<GameObject> cubeMapObject() { return m_cubemapObj; }
+
+		void SetPostEffect(shared_ptr<GameObject> postEffectObj) { m_postEffectObj = postEffectObj; }
+
+		shared_ptr<GameObject> postEffectObject(){ return m_postEffectObj; }
+
 	public:
 		shared_ptr<Camera> mainCamera()
 		{
@@ -56,6 +64,7 @@ namespace yk
 	private:
 		shared_ptr<Camera> m_mainCamera;
 		map<unsigned int, shared_ptr<GameObject>> m_gameObjects;
-		
+		shared_ptr<GameObject> m_cubemapObj;
+		shared_ptr<GameObject> m_postEffectObj;
 	};
 }

@@ -60,21 +60,24 @@ namespace yk
 		void set(const string &&name, T value) const
 		{
 			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
-			glUniform1i(loc, (GLint)value);
+			if (loc != -1)
+				glUniform1i(loc, value);
 		}
 
 		template<>
 		void set<float>(const string &&name, float value) const
 		{
 			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
-			glUniform1f(loc, value);
+			if (loc != -1)
+				glUniform1f(loc, value);
 		}
 		
 		template<>
 		void set(const string &&name, glm::mat4 mtx) const
 		{
 			auto loc = glGetUniformLocation(m_shaderProgram, name.c_str());
-			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(mtx));
+			if (loc != -1)
+				glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(mtx));
 		}
 		
 	private:

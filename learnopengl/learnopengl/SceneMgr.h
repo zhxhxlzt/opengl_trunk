@@ -16,6 +16,10 @@ namespace yk
 
 		static shared_ptr<GameObject> CreateGameObject();
 
+		static shared_ptr<GameObject> CreateCubeMapObject();
+
+		static shared_ptr<GameObject> CreatePostEffectObject();
+
 	private:
 		static shared_ptr<Scene> m_curScene;
 	};

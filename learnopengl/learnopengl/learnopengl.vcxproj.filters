@@ -22,6 +22,9 @@
     <Filter Include="code\exercise">
       <UniqueIdentifier>{2cf48b66-4c3b-4a40-8530-c33ad19fd446}</UniqueIdentifier>
     </Filter>
+    <Filter Include="code\shaders\framebuffertest">
+      <UniqueIdentifier>{2dd96e61-3858-40d7-9a02-36c5b196eb78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="源.cpp">
@@ -69,11 +72,8 @@
     <ClCompile Include="Object.cpp">
       <Filter>code\源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FrameBufferCom.h">
-      <Filter>code\exercise</Filter>
-    </ClCompile>
     <ClCompile Include="FrameBufferCom.cpp">
-      <Filter>code\exercise</Filter>
+      <Filter>code\源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +167,9 @@
     <ClInclude Include="ModelFilter.h">
       <Filter>code\头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FrameBufferCom.h">
+      <Filter>code\头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="4.2.texture.frag">
@@ -231,6 +234,18 @@
     </None>
     <None Include="5.1.framebuffers_screen.fs">
       <Filter>code\shaders</Filter>
+    </None>
+    <None Include="cubemap.vert">
+      <Filter>code\shaders</Filter>
+    </None>
+    <None Include="cubemap.frag">
+      <Filter>code\shaders</Filter>
+    </None>
+    <None Include="frametest.vert">
+      <Filter>code\shaders\framebuffertest</Filter>
+    </None>
+    <None Include="frametest.frag">
+      <Filter>code\shaders\framebuffertest</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

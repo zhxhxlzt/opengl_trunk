@@ -12,7 +12,7 @@ namespace yk
 
 		Shader shader;
 		unsigned int vao;
-		CTexture tex1, tex2;
+		TextureLoader tex1, tex2;
 	public:
 
 		virtual void Awake()

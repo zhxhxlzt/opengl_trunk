@@ -130,7 +130,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="FrameBufferCom.cpp" />
-    <ClCompile Include="FrameBufferCom.h" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Input.cpp" />
@@ -152,6 +151,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CamMove.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="FrameBufferCom.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicDebug.h" />
     <ClInclude Include="Input.h" />
@@ -196,6 +196,10 @@
     <None Include="7.1.camera.fs" />
     <None Include="7.1.camera.vert" />
     <None Include="7.1.camera.vs" />
+    <None Include="cubemap.frag" />
+    <None Include="cubemap.vert" />
+    <None Include="frametest.frag" />
+    <None Include="frametest.vert" />
     <None Include="test.frag" />
     <None Include="test.vert" />
     <None Include="test1.vert" />

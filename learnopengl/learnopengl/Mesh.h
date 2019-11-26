@@ -29,12 +29,10 @@ namespace yk
 	{
 		TYPE(yk::Mesh, Object)
 	public:
-		float offset = 0.01f;
-		float cor = 0.01f;
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures;
-		Mesh() {}
+		Mesh() : vertDirty(true) {}
 		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures) :
 			vertices(vertices), indices(indices), textures(textures)
 		{
@@ -48,34 +46,42 @@ namespace yk
 			}
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
+			unsigned int cubemapNr = 1;
 			for (unsigned int i = 0; i < textures.size(); i++)
 			{
 				string number;
 				string name = textures[i].type;
+
+				if (name == "texture_cubemap")
+				{
+					glCheckError();
+
+					number = to_string(cubemapNr++);
+					auto unistr = (name + number);
+					
+					glBindTexture(GL_TEXTURE_CUBE_MAP, textures[i].id);
+					glActiveTexture(GL_TEXTURE0 + i);
+					shader.set(move(unistr), i);
+					continue;
+				}
+
 				if (name == "texture_diffuse")
 					number = to_string(diffuseNr++);
 				else if (name == "texture_specular")
 					number = to_string(specularNr++);
 
-				
-				
-				//glCheckError();
-
-				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, textures[i].id);
+				glActiveTexture(GL_TEXTURE0 + i);
+
 				auto unistr = (name + number);
 				shader.set(move(unistr), i);
 				glCheckError();
 			}
-			/*cor += offset;
-			if (cor >= 1)
-				cor = 0.01f;
-			shader.set("cor", cor);
-			shader.set("texture_diffuse1", textures[0].id);*/
+			//glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(m_vao);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
-			glActiveTexture(GL_TEXTURE0);
+			
 		}
 
 		void CombineMeshes(vector<Mesh> meshes)

@@ -13,7 +13,7 @@ namespace yk
 		TYPE(yk::RenderCom2, MonoBehaviour)
 		Shader shader;
 		Model* modelobj;
-		CTexture tex1;
+		TextureLoader tex1;
 		mat4 lastview = mat4(1);
 
 	public:

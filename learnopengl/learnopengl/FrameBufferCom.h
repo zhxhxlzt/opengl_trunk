@@ -1,3 +1,4 @@
+#pragma once
 #include "MonoBehaviour.h"
 #include "GameObject.h"
 
@@ -5,9 +6,9 @@ namespace yk
 {
 	class FrameBufferCom : public MonoBehaviour
 	{
-		TYPE(yk::FrameBuffCom, MonoBehaviour);
+		TYPE(yk::FrameBufferCom, MonoBehaviour);
 	public:
-		unsigned int fbo;	// Ö¡»º³å
+		unsigned int fbo = -1;	// Ö¡»º³å
 		unsigned int tex;	// ÑÕÉ«»º³å¸½Ìå
 		unsigned int dep;	// Éî¶È»º³å¸½¼þ
 		unsigned int ste;	// Ä£°å»º³å¸½¼þ
@@ -15,9 +16,5 @@ namespace yk
 
 	public:
 		virtual void Awake();
-
-		virtual void OnRendering();
-
-		virtual void LateUpdate();
 	};
 }

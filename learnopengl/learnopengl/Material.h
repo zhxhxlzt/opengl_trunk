@@ -32,7 +32,7 @@ namespace yk
 		static Material get()
 		{
 			Shader shader = Shader("1.model_loading.vert", "1.model_loading.fs");
-			CTexture t;
+			TextureLoader t;
 			t.load("container.jpg", GL_RGB);
 
 			Texture tex;

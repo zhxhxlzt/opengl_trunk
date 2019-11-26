@@ -3,6 +3,8 @@
 #include "Mesh.h"
 #include "GameObject.h"
 #include "GraphicDebug.h"
+#include "SceneMgr.h"
+
 using namespace yk;
 
 void MeshRenderer::Rendering()
@@ -17,6 +19,17 @@ void MeshRenderer::Rendering()
 		tar_mesh = mesh_filter->sharedMesh;
 
 	auto shader = material()->shader();
+
+	auto modelMatrix = transform()->Model();
+	auto cam = SceneMgr::currentScene()->mainCamera();
+	auto viewMatrix = cam->transform()->View();
+	auto projMatrix = cam->Proj();
+
 	shader.use();
+	shader.set("model", modelMatrix);
+	shader.set("view", viewMatrix);
+	shader.set("projection", projMatrix);
+
 	tar_mesh->draw(shader);
+	glCheckError();
 }

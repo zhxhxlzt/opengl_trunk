@@ -30,18 +30,5 @@ void FrameBufferCom::Awake()
 	{
 		cout << "frame buffer complete" << endl;
 	}
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-void FrameBufferCom::OnRendering()
-{
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glDisable(GL_DEPTH_TEST);
-	glClearColor(0.5, 1, 1, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void FrameBufferCom::LateUpdate()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, rbo);
-	glEnable(GL_DEPTH_TEST);
 }

@@ -20,12 +20,12 @@ namespace yk
 		GL_Linear_Mipmap_Linear = GL_LINEAR_MIPMAP_LINEAR
 	};
 
-	class CTexture : public Object
+	class TextureLoader : public Object
 	{
-		TYPE(yk::CTexture, Object);
+		TYPE(yk::TextureLoader, Object);
 
 	public:
-		CTexture() { init(); }
+		TextureLoader() { init(); }
 		void init(GLenum target = GL_TEXTURE_2D,
 			WrapMode wrap_s = GL_Repeat,
 			WrapMode wrap_t = GL_Repeat,
@@ -49,8 +49,9 @@ namespace yk
 
 		GLuint getTextureID() { return m_texture; }
 
-		static unsigned int TextureFromFile(const char *path, const string &directory);
+		static unsigned int TextureFromFile(const char *path, const string directory="", GLuint textureType=GL_TEXTURE_2D);
 		
+		static unsigned int TextureCubeMap(vector<string> faces);
 
 	private:
 		GLuint m_texture;

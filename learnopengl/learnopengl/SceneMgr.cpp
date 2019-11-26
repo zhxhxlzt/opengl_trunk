@@ -89,18 +89,88 @@ void SetQuadMesh(shared_ptr<MeshFilter> filter)
 	filter->mesh = mesh;
 }
 
-shared_ptr<Material> GetMat()
+void SetCubeMapMesh(shared_ptr <MeshFilter> filter)
 {
-	Shader s = Shader("5.1.framebuffers_screen.vs", "5.1.framebuffers_screen.fs");
-	auto mat = make_shared<Material>(s);
-	return mat;
+	vector<float> skyboxVertices = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+	vector<unsigned int> indices;
+	auto mesh = make_shared<Mesh>();
+
+	for (int i = 0; i < skyboxVertices.size() / 3; i++)
+	{
+		Vertex v;
+		v.position = vec3(
+			skyboxVertices[i * 3],
+			skyboxVertices[i * 3 + 1],
+			skyboxVertices[i * 3 + 2]
+		);
+		mesh->AddVert(move(v));
+	}
+
+	for (unsigned int i = 0; i < skyboxVertices.size(); i++)
+	{
+		indices.push_back(i);
+	}
+	mesh->AddIndices(indices);
+	filter->mesh = mesh;
 }
 
 void SetMat(shared_ptr<MeshRenderer> render)
 {
-	auto mat = GetMat();
+	Shader s = Shader("5.1.framebuffers_screen.vs", "5.1.framebuffers_screen.fs");
+	auto mat = make_shared<Material>(s);
 	render->setMaterial(mat);
 }
+
+void SetCubeMapMat(shared_ptr<MeshRenderer> render)
+{
+	Shader s = Shader("cubemap.vert", "cubemap.frag");
+	auto mat = make_shared<Material>(s);
+	render->setMaterial(mat);
+}
+
 
 shared_ptr<Scene> SceneMgr::testScene()
 {
@@ -138,7 +208,7 @@ shared_ptr<Scene> SceneMgr::testScene()
 	scene->SetMainCamera(camComp);
 
 	// 控制离屏渲染的对象
-	auto renderObj = CreateGameObject();
+	auto renderObj = CreatePostEffectObject();
 	auto frameCom = renderObj->AddComponent<FrameBufferCom>();
 	auto meshFilter = renderObj->AddComponent<MeshFilter>();
 	auto meshRender = renderObj->AddComponent<MeshRenderer>();
@@ -147,12 +217,32 @@ shared_ptr<Scene> SceneMgr::testScene()
 
 	Texture t;
 	t.id = frameCom->tex;
-	CTexture ct;
-	//auto id = ct.TextureFromFile("awesomeface.png", "");
-	/*ct.load("awesomeface.png", GL_RGBA);
-	t.id = ct.getTextureID();*/
 	t.type = "texture_diffuse";
 	meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
+
+	// cubemap对象
+	// rendermgr中单独渲染天空盒
+	// mesh中支持设置cubemap
+	auto cubemapobj = CreateCubeMapObject();
+	auto cubeMeshFilter = cubemapobj->AddComponent<MeshFilter>();
+	auto cubeMeshRender = cubemapobj->AddComponent<MeshRenderer>();
+
+	SetCubeMapMesh(cubeMeshFilter);
+	SetCubeMapMat(cubeMeshRender);
+
+	auto cubeMapID = TextureLoader::TextureCubeMap(vector<string>{
+				"cubemap/skybox/right.jpg", 
+				"cubemap/skybox/left.jpg", 
+				"cubemap/skybox/top.jpg", 
+				"cubemap/skybox/bottom.jpg", 
+				"cubemap/skybox/front.jpg", 
+				"cubemap/skybox/back.jpg"
+	});
+
+	Texture cubeTex;
+	cubeTex.id = cubeMapID;
+	cubeTex.type = "texture_cubemap";
+	cubeMeshFilter->mesh->textures.push_back(move(cubeTex));
 
 	return scene;
 }
@@ -166,3 +256,24 @@ shared_ptr<GameObject> SceneMgr::CreateGameObject()
 	}
 	return gb;
 }
+
+shared_ptr<GameObject> SceneMgr::CreatePostEffectObject()
+{
+	auto gb = GameObject::Create();
+	if (m_curScene)
+	{
+		m_curScene->SetPostEffect(gb);
+	}
+	return gb;
+}
+
+shared_ptr<GameObject> SceneMgr::CreateCubeMapObject()
+{
+	auto gb = GameObject::Create();
+	if (m_curScene)
+	{
+		m_curScene->SetCubeMap(gb);
+	}
+	return gb;
+}
+

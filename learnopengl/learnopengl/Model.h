@@ -164,7 +164,7 @@ namespace yk
 				if (!skip)
 				{
 					Texture texture;
-					texture.id = CTexture::TextureFromFile(str.C_Str(), directory);
+					texture.id = TextureLoader::TextureFromFile(str.C_Str(), directory);
 					texture.type = tpname;
 					texture.path = str.C_Str();
 					textures.push_back(texture);
@@ -236,7 +236,7 @@ namespace yk
 				indices.push_back(i);
 			}
 
-			CTexture ctex;
+			TextureLoader ctex;
 			ctex.load("container.jpg", GL_RGB);
 			Texture tex;
 			tex.id = ctex.getTextureID();
