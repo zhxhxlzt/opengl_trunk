@@ -59,8 +59,8 @@ namespace yk
 					number = to_string(cubemapNr++);
 					auto unistr = (name + number);
 					
-					glBindTexture(GL_TEXTURE_CUBE_MAP, textures[i].id);
 					glActiveTexture(GL_TEXTURE0 + i);
+					glBindTexture(GL_TEXTURE_CUBE_MAP, textures[i].id);
 					shader.set(move(unistr), i);
 					continue;
 				}
@@ -70,14 +70,14 @@ namespace yk
 				else if (name == "texture_specular")
 					number = to_string(specularNr++);
 
-				glBindTexture(GL_TEXTURE_2D, textures[i].id);
 				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
 				auto unistr = (name + number);
 				shader.set(move(unistr), i);
 				glCheckError();
 			}
-			//glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(m_vao);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);

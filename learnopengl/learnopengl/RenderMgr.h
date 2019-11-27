@@ -61,74 +61,11 @@ namespace yk
 				glDepthFunc(GL_LESS);
 			}
 
-			
 			if (postEffect)
 			{
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				auto tex = postEffect->GetComponent<FrameBufferCom>()->tex;
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, tex);
-				
-
-				unsigned int vao, vbo;
-				vector<float> vertices = {
-					0, 0, 0, 0, 0,
-					1, 0, 0, 1, 0,
-					1, 1, 0, 1, 1
-				};
-				glGenVertexArrays(1, &vao);
-				glGenBuffers(1, &vbo);
-				
-				glBindVertexArray(vao);
-				glBindBuffer(GL_ARRAY_BUFFER, vbo);
-				glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-				glEnableVertexAttribArray(1);
-
-				Shader shd = Shader("frametest.vert", "frametest.frag");
-				shd.use();
-				shd.set("ftex", 0);
-				glDrawArrays(GL_TRIANGLES, 0, 3);
-
-				/*glDisable(GL_DEPTH_TEST);
-				Rendering(postEffect);
-				glEnable(GL_DEPTH_TEST);*/
+				PostRendering(postEffect);
 			}
-
-			// ---------------- 测试帧缓冲对象是否正常写入颜色缓冲
-
-			//auto tex = postEffect->GetComponent<FrameBufferCom>()->tex;
-			//float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-			//	// positions   // texCoords
-			//	-1.0f,  1.0f,  0.0f, 1.0f,
-			//	-1.0f, -1.0f,  0.0f, 0.0f,
-			//	 1.0f, -1.0f,  1.0f, 0.0f,
-
-			//	-1.0f,  1.0f,  0.0f, 1.0f,
-			//	 1.0f, -1.0f,  1.0f, 0.0f,
-			//	 1.0f,  1.0f,  1.0f, 1.0f
-			//};
-			//unsigned int quadVAO, quadVBO;
-			//glGenVertexArrays(1, &quadVAO);
-			//glGenBuffers(1, &quadVBO);
-			//glBindVertexArray(quadVAO);
-			//glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-			//glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-			//glEnableVertexAttribArray(0);
-			//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-			//glEnableVertexAttribArray(1);
-			//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-			//Shader shader("5.1.framebuffers.vs", "5.1.framebuffers.fs");
-			//shader.use();
-			//shader.set("texture_diffuse1", 0);
-
-			//glBindVertexArray(quadVAO);
-			//glBindTexture(GL_TEXTURE_2D, tex);	// use the color attachment texture as the texture of the quad plane
-			//glDrawArrays(GL_TRIANGLES, 0, 6);
-			// 刷新帧缓冲，事件
+			
 			m_window->finish();
 		}
 		static shared_ptr<Window> window() { return m_window; }
@@ -152,20 +89,17 @@ namespace yk
 		static void PostRenderPrepare(shared_ptr<GameObject> p)
 		{
 			auto fbCom = p->GetComponent<FrameBufferCom>();
-
 			glBindFramebuffer(GL_FRAMEBUFFER, fbCom->fbo);
-			
 		}
 		
 		static void PostRendering(shared_ptr<GameObject> p)
 		{
-			
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glDisable(GL_DEPTH_TEST);
-			//glDepthMask(GL_FALSE);
-			
 			Rendering(p);
 			glEnable(GL_DEPTH_TEST);
-			//glDepthMask(GL_TRUE);
+			auto fboCom = p->GetComponent<FrameBufferCom>();
+			glBindFramebuffer(GL_FRAMEBUFFER, fboCom->rbo);
 		}
 		static shared_ptr<Window> m_window;
 	};
