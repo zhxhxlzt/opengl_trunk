@@ -11,6 +11,7 @@
 #include "BoxCom.h"
 #include "ModelFilter.h"
 #include "FrameBufferCom.h"
+#include "RenderMgr.h"
 using namespace yk;
 shared_ptr<Scene> SceneMgr::m_curScene = nullptr;
 
@@ -171,26 +172,46 @@ void SetCubeMapMat(shared_ptr<MeshRenderer> render)
 	render->setMaterial(mat);
 }
 
-
+void SceneMgr::UpdateScene(Timer& timer)
+{
+	currentScene()->UpdateGameObjects();
+	currentScene()->FillMatricesUbo();
+	currentScene()->FillLightsUbo();
+	RenderMgr::RenderUpdate(currentScene());
+	currentScene()->LateUpdateGameObjects();
+}
 shared_ptr<Scene> SceneMgr::testScene()
 {
 	// 创建并设置当前场景
 	auto scene = make_shared<Scene>();
-	m_curScene = scene;
+	//m_curScene = scene;
 
 	// 创建模型游戏对象步骤
 	// 1.创建 Shader, Material
 	// 2.创建 GameObject
 	// 2.添加 ModelFilter, ModelRenderer 组件并初始化
-	auto shader = Shader("1.model_loading.vert", "1.model_loading.fs");
-	auto mat = make_shared<Material>(shader);
-	
-	auto role = CreateGameObject();
-	auto filter = role->AddComponent<ModelFilter>();
-	auto render = role->AddComponent<ModelRenderer>();
+	auto role = scene->CreateGameObject();
+	{
+		auto shader = Shader("1.model_loading.vert", "1.model_loading.fs");
+		auto mat = make_shared<Material>(shader);
 
-	filter->Load("model/nanosuit.obj");
-	render->setMaterial(mat);
+		auto filter = role->AddComponent<ModelFilter>();
+		auto render = role->AddComponent<ModelRenderer>();
+
+		filter->Load("model/nanosuit.obj");
+		render->setMaterial(mat);
+	}
+
+	auto cubeRole = scene->CreateGameObject();
+	{
+		auto cubeMf = cubeRole->AddComponent<MeshFilter>();
+		cubeMf->mesh = make_shared<Mesh>(Mesh::CubeMesh());
+		auto cubeRd = cubeRole->AddComponent<MeshRenderer>();
+		auto cubeShader = Shader("2.1.basic_lighting.vert", "2.1.basic_lighting.frag");
+		auto mat = make_shared<Material>(cubeShader);
+		cubeRd->setMaterial(mat);
+	}
+	
 
 	// 创建相机步骤
 	// 1. 创建 GameObject
@@ -198,33 +219,37 @@ shared_ptr<Scene> SceneMgr::testScene()
 	// 3. 添加 CamMove 组件
 	// 4. 设置场景相机
 
-	auto mainCamera = CreateGameObject();
-	mainCamera->transform()->position() = vec3(0, 7, 15);
-	auto camMove = mainCamera->AddComponent<CamMove>();
-	auto camComp = mainCamera->AddComponent<Camera>();
-	camComp->SetFov(110.0f);
-	camComp->SetNear(0.01f);
-	camComp->SetFar(100.0f);
-	scene->SetMainCamera(camComp);
+	auto mainCamera = scene->CreatePerspectiveCamera();
+	mainCamera->AddComponent<CamMove>();
+	
 
 	// 控制离屏渲染的对象
-	auto renderObj = CreatePostEffectObject();
+	/*auto renderObj = CreatePostEffectObject();
 	auto frameCom = renderObj->AddComponent<FrameBufferCom>();
 	auto meshFilter = renderObj->AddComponent<MeshFilter>();
 	auto meshRender = renderObj->AddComponent<MeshRenderer>();
 	SetQuadMesh(meshFilter);
 	SetMat(meshRender);
-
-	Texture t;
-	t.id = frameCom->tex;
-	t.type = "texture_diffuse";
-	meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
+*/
+	//Texture t;
+	//t.id = frameCom->tex;
+	//t.type = "texture_diffuse";
+	//meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
 
 	// cubemap对象
 	// rendermgr中单独渲染天空盒
 	// mesh中支持设置cubemap
-	auto cubemapobj = CreateCubeMapObject();
-	auto cubeMeshFilter = cubemapobj->AddComponent<MeshFilter>();
+	auto cubemapobj = scene->CreateCubeMap(vector<string>{
+			"cubemap/skybox/right.jpg",
+			"cubemap/skybox/left.jpg",
+			"cubemap/skybox/top.jpg",
+			"cubemap/skybox/bottom.jpg",
+			"cubemap/skybox/front.jpg",
+			"cubemap/skybox/back.jpg"
+	});
+	scene->SetCubeMap(cubemapobj);
+	//auto cubemapobj = CreateCubeMapObject();
+	/*auto cubeMeshFilter = cubemapobj->AddComponent<MeshFilter>();
 	auto cubeMeshRender = cubemapobj->AddComponent<MeshRenderer>();
 
 	SetCubeMapMesh(cubeMeshFilter);
@@ -242,7 +267,7 @@ shared_ptr<Scene> SceneMgr::testScene()
 	Texture cubeTex;
 	cubeTex.id = cubeMapID;
 	cubeTex.type = "texture_cubemap";
-	cubeMeshFilter->mesh->textures.push_back(move(cubeTex));
+	cubeMeshFilter->mesh->textures.push_back(move(cubeTex));*/
 
 	return scene;
 }

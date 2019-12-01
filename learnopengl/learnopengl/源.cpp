@@ -109,8 +109,10 @@ int main()
 	//testProfile();
 	Application app;
 	RenderMgr::InitWindow();
-	SceneMgr::testScene();
-	app.StartTimer(&RenderMgr::RenderUpdate);
+	auto scene = SceneMgr::testScene();
+	SceneMgr::load(scene);
+	//app.StartTimer(&RenderMgr::RenderUpdate);
+	app.StartTimer(&SceneMgr::UpdateScene);
 	app.run();
 	//testconstruct();
 	//testmap();

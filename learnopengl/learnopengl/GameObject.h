@@ -24,6 +24,7 @@ namespace yk
 			//m_transform = make_shared<Transform>();
 			//m_transform->attachToGameObject(m_this);
 		}
+		bool active = true;
 		std::shared_ptr<Transform> transform() { return m_transform; }
 
 		template<typename T>
@@ -32,11 +33,6 @@ namespace yk
 			if (not std::is_base_of_v<Component, T>)
 			{
 				throw new std::exception("类型错误，不是Component的子类！");
-			}
-
-			if (is_same_v<Transform, T>)
-			{
-				throw new exception("不允许添加Transform");
 			}
 
 			return _AddComponent<T>(is_base_of<MonoBehaviour, T>());
@@ -137,6 +133,15 @@ namespace yk
 				com->Update();
 			}
 		}
+
+		virtual void LateUpdateComponent()
+		{
+			for (auto &com : m_behaviours)
+			{
+				com->LateUpdate();
+			}
+		}
+
 	private:
 		template<typename T>
 		shared_ptr<T> _AddComponent(std::true_type)
@@ -160,9 +165,10 @@ namespace yk
 
 	private:
 		std::vector<std::shared_ptr<Component>>		m_comps;
-		vector<shared_ptr<MonoBehaviour>>				m_behaviours;
+		std::vector<std::shared_ptr<MonoBehaviour>> m_behaviours;
 		shared_ptr<Transform>						m_transform;
 		shared_ptr<GameObject>						m_this;
+		
 
 	// STATIC
 	public:

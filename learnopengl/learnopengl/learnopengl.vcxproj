@@ -155,6 +155,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicDebug.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LightCom.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
@@ -185,6 +186,8 @@
     <None Include="1.model_loading.fs" />
     <None Include="1.model_loading.vert" />
     <None Include="1.model_loading.vs" />
+    <None Include="2.1.basic_lighting.frag" />
+    <None Include="2.1.basic_lighting.vert" />
     <None Include="4.2.texture.frag" />
     <None Include="4.2.texture.vertex" />
     <None Include="5.1.framebuffers_screen.fs" />

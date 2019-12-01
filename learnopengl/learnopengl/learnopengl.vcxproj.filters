@@ -170,6 +170,9 @@
     <ClInclude Include="FrameBufferCom.h">
       <Filter>code\头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LightCom.h">
+      <Filter>code\头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="4.2.texture.frag">
@@ -246,6 +249,12 @@
     </None>
     <None Include="frametest.frag">
       <Filter>code\shaders\framebuffertest</Filter>
+    </None>
+    <None Include="2.1.basic_lighting.vert">
+      <Filter>code\shaders</Filter>
+    </None>
+    <None Include="2.1.basic_lighting.frag">
+      <Filter>code\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

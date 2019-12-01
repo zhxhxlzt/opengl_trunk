@@ -2,11 +2,11 @@
 
 #include "Object.h"
 #include "Window.h"
-#include "SceneMgr.h"
 #include "Application.h"
 #include "Renderer.h"
 #include "Timer.h"
 #include "FrameBufferCom.h"
+#include "Scene.h"
 namespace yk
 {
 	class RenderMgr : public Object
@@ -20,9 +20,20 @@ namespace yk
 			m_window->init();
 			glCheckError();
 		}
-
-		static void RenderUpdate(Timer &timer)
+		static void RenderUpdate(shared_ptr<Scene> currentScene)
 		{
+			/*
+			1. 窗口准备
+			2. gameobject组件更新
+			3. 更新场景数据：
+				1. view，projection的uniform buffer
+				2. 灯光数据
+			4. 渲染（模型，天空盒）
+			5. 后处理
+			6. swapbuffers, 处理ui事件
+			*/
+
+
 			auto res = m_window->prepare();
 			if (not res)
 			{
@@ -31,14 +42,8 @@ namespace yk
 				return;
 			}
 
-			// 脚本逻辑后面从渲染中移除
-			for (auto &p : SceneMgr::currentScene()->GameObjects())
-			{
-				p->UpdateComponent();
-			}
-
 			// 设置目标帧缓冲
-			auto postEffect = SceneMgr::currentScene()->postEffectObject();
+			auto postEffect = currentScene->postEffectObject();
 			if (postEffect)
 			{
 				auto fbCom = postEffect->GetComponent<FrameBufferCom>();
@@ -47,13 +52,13 @@ namespace yk
 
 			// 由gameobject上的组件去进行渲染
 			// 后面加入不同周期，不同阶段更新gameobject
-			for (auto &p : SceneMgr::currentScene()->GameObjects())
+			for (auto &p : currentScene->GameObjects())
 			{
 				Rendering(p);
 			}
 
 			// 渲染天空盒
-			auto p = SceneMgr::currentScene()->cubeMapObject();
+			auto p = currentScene->cubeMapObject();
 			if (p)
 			{
 				glDepthFunc(GL_LEQUAL);

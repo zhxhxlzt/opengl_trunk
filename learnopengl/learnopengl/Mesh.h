@@ -121,6 +121,89 @@ namespace yk
 			vertDirty = true;
 		}
 
+	public:
+		static Mesh CubeMesh()
+		{
+			vector<vec3> pos = {
+				//front z
+				vec3(-1, -1,  1),
+				vec3( 1, -1,  1),
+				vec3( 1,  1,  1),
+				vec3(-1,  1,  1),
+				//back z	
+				vec3(-1, -1, -1),
+				vec3( 1, -1, -1),
+				vec3( 1,  1, -1),
+				vec3(-1,  1, -1),
+			};
+
+			vector<float> normals = {
+				
+			};
+
+			vector<vec2> texcoords = {
+				// front z
+				vec2(0, 0),
+				vec2(1, 0),
+				vec2(1, 1),
+				vec2(0, 1)
+			};
+
+			vector<vec3> indices = {
+				//front z
+				vec3(0, 1, 2),
+				vec3(0, 2, 3),
+				//rightx
+				vec3(1, 5, 6),
+				vec3(1, 6, 2),
+				//back z
+				vec3(5, 4, 7),
+				vec3(5, 7, 6),
+				//left x,
+				vec3(4, 0, 3),
+				vec3(4, 3, 7),
+				//up y	
+				vec3(3, 2, 6),
+				vec3(3, 6, 7),
+				//down y
+				vec3(0, 4, 5),
+				vec3(0, 5, 1),
+			};
+			vector<Vertex> vertices;
+			Mesh mesh;
+			for (auto triIdx : indices)
+			{
+				vector<Vertex> triangle;
+
+				for (int i = 0; i < 3; i++)
+				{
+					Vertex v;
+					v.position = pos[triIdx[i]];
+					//v.texCoord = texcoords[triIdx[i] % 4];
+					triangle.push_back(v);
+				}
+
+				auto v1 = triangle[1].position - triangle[0].position;
+				auto v2 = triangle[2].position - triangle[0].position;
+				vec3 norm = normalize(cross(v1, v2));
+				for (auto &v : triangle)
+				{
+					v.normal = norm;
+				}
+
+				for (auto &e : triangle)
+				{
+					vertices.push_back(e);
+				}
+			}
+			mesh.vertices = vertices;
+			for (unsigned int i = 0; i < 36; i++)
+			{
+				mesh.indices.push_back(i);
+			}
+			return mesh;
+		}
+
 	private:
 		bool vertDirty = true;
 		unsigned int m_vao, m_vbo, m_ebo;
