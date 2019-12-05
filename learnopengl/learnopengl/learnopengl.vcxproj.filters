@@ -25,6 +25,9 @@
     <Filter Include="code\shaders\framebuffertest">
       <UniqueIdentifier>{2dd96e61-3858-40d7-9a02-36c5b196eb78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="code\shaders\myshaders">
+      <UniqueIdentifier>{dbe935bb-41bc-40f2-ac3d-6e8567f15c22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="源.cpp">
@@ -255,6 +258,12 @@
     </None>
     <None Include="2.1.basic_lighting.frag">
       <Filter>code\shaders</Filter>
+    </None>
+    <None Include="standard.vert">
+      <Filter>code\shaders\myshaders</Filter>
+    </None>
+    <None Include="standard.frag">
+      <Filter>code\shaders\myshaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

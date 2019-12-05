@@ -32,9 +32,28 @@ namespace yk
 			5. 后处理
 			6. swapbuffers, 处理ui事件
 			*/
-
-
 			auto res = m_window->prepare();
+			auto oldFbo = -1;
+			glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
+			cout << "old frame buffer id:" << oldFbo << endl;
+
+			// 设置目标帧缓冲
+			auto postEffect = currentScene->postEffectObject();
+
+
+			if (postEffect)
+			{
+				auto fbCom = postEffect->GetComponent<FrameBufferCom>();
+				glBindFramebuffer(GL_FRAMEBUFFER, fbCom->fbo);
+			}
+
+
+			//glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
+
+
+			//auto res = m_window->prepare();
+			glGetError();
+			
 			if (not res)
 			{
 				m_window->terminate();
@@ -42,13 +61,7 @@ namespace yk
 				return;
 			}
 
-			// 设置目标帧缓冲
-			auto postEffect = currentScene->postEffectObject();
-			if (postEffect)
-			{
-				auto fbCom = postEffect->GetComponent<FrameBufferCom>();
-				glBindFramebuffer(GL_FRAMEBUFFER, fbCom->fbo);
-			}
+			
 
 			// 由gameobject上的组件去进行渲染
 			// 后面加入不同周期，不同阶段更新gameobject
@@ -68,7 +81,10 @@ namespace yk
 
 			if (postEffect)
 			{
+				glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 				PostRendering(postEffect);
+				//auto fboCom = p->GetComponent<FrameBufferCom>();
+				//glBindFramebuffer(GL_FRAMEBUFFER, fboCom->rbo);
 			}
 			
 			m_window->finish();
@@ -99,12 +115,11 @@ namespace yk
 		
 		static void PostRendering(shared_ptr<GameObject> p)
 		{
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
 			glDisable(GL_DEPTH_TEST);
 			Rendering(p);
 			glEnable(GL_DEPTH_TEST);
-			auto fboCom = p->GetComponent<FrameBufferCom>();
-			glBindFramebuffer(GL_FRAMEBUFFER, fboCom->rbo);
+			
 		}
 		static shared_ptr<Window> m_window;
 	};

@@ -10,7 +10,7 @@ namespace yk
 		TYPE(yk::LightCom, Component);
 
 	public:
-		LightMode lightMode() { return m_lightMode; }
+		LightMode& lightMode() { return m_lightMode; }
 		float& intensity() { return m_intensity; }
 		glm::vec3& color() { return m_color; }
 		vec3 dir() { return transform()->forward(); }

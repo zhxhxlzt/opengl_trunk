@@ -22,6 +22,12 @@ namespace yk
 			this->mat = mat;
 		}
 
+		void useDefaultMaterial()
+		{
+			Shader shader = Shader("standard.vert", "standard.frag");
+			mat = make_shared<Material>(shader);
+		}
+
 	protected:
 		shared_ptr<Material> mat;
 	};

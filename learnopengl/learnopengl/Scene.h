@@ -39,7 +39,7 @@ namespace yk
 			//µã¹â
 			glGenBuffers(1, &m_pointLightsUbo);
 			glBindBuffer(GL_UNIFORM_BUFFER, m_pointLightsUbo);
-			glBufferData(GL_UNIFORM_BUFFER, sizeof(unsigned int) + (sizeof(vec4) * 2 + sizeof(float)) * 10, NULL, GL_STATIC_DRAW);
+			glBufferData(GL_UNIFORM_BUFFER, sizeof(float)*10, NULL, GL_STATIC_DRAW);
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 			glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_pointLightsUbo);
 		}
@@ -80,13 +80,16 @@ namespace yk
 			auto size = pointLights.size();
 			unsigned offset = sizeof(unsigned);
 			unsigned step = sizeof(vec4) * 2 + sizeof(float);
-			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(unsigned), &size);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(unsigned int), &size);
 
 			for (auto &light : pointLights)
 			{
-				glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(vec3), value_ptr(light->transform()->position()));
-				glBufferSubData(GL_UNIFORM_BUFFER, offset + sizeof(vec4), sizeof(float), &light->intensity());
-				glBufferSubData(GL_UNIFORM_BUFFER, offset + sizeof(vec4) + sizeof(float), sizeof(vec3), value_ptr(light->color()));
+				//glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(vec3), &light->transform()->position());
+				glBufferSubData(GL_UNIFORM_BUFFER, sizeof(unsigned int), sizeof(vec3), value_ptr(vec3(0.4, 0.5, 0.7)));
+
+				cout << "pos:" << light->transform()->position() << endl;
+				glBufferSubData(GL_UNIFORM_BUFFER, sizeof(unsigned int) + sizeof(vec4), sizeof(float), &(light->intensity()));
+				glBufferSubData(GL_UNIFORM_BUFFER, sizeof(unsigned int) + sizeof(vec4) + sizeof(float), sizeof(vec3), value_ptr(light->color()));
 				offset += step;
 			}
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);

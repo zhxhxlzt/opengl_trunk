@@ -12,6 +12,9 @@
 #include "ModelFilter.h"
 #include "FrameBufferCom.h"
 #include "RenderMgr.h"
+#include "LightCom.h"
+#include "Transform.h"
+
 using namespace yk;
 shared_ptr<Scene> SceneMgr::m_curScene = nullptr;
 
@@ -180,17 +183,21 @@ void SceneMgr::UpdateScene(Timer& timer)
 	RenderMgr::RenderUpdate(currentScene());
 	currentScene()->LateUpdateGameObjects();
 }
+
+/*
+测试用场景，用于生成场景内物体
+*/
 shared_ptr<Scene> SceneMgr::testScene()
 {
 	// 创建并设置当前场景
 	auto scene = make_shared<Scene>();
-	//m_curScene = scene;
+	m_curScene = scene;
 
 	// 创建模型游戏对象步骤
 	// 1.创建 Shader, Material
 	// 2.创建 GameObject
 	// 2.添加 ModelFilter, ModelRenderer 组件并初始化
-	auto role = scene->CreateGameObject();
+	/*auto role = scene->CreateGameObject();
 	{
 		auto shader = Shader("1.model_loading.vert", "1.model_loading.fs");
 		auto mat = make_shared<Material>(shader);
@@ -200,16 +207,38 @@ shared_ptr<Scene> SceneMgr::testScene()
 
 		filter->Load("model/nanosuit.obj");
 		render->setMaterial(mat);
-	}
+	}*/
 
 	auto cubeRole = scene->CreateGameObject();
 	{
 		auto cubeMf = cubeRole->AddComponent<MeshFilter>();
 		cubeMf->mesh = make_shared<Mesh>(Mesh::CubeMesh());
+		auto texID = TextureLoader::TextureFromFile("container.jpg");
+
+		Texture t;
+		t.id = texID;
+		t.type = "texture_diffuse";
+		t.path = "container.jpg";
+		cubeMf->mesh->textures.push_back(t);
 		auto cubeRd = cubeRole->AddComponent<MeshRenderer>();
-		auto cubeShader = Shader("2.1.basic_lighting.vert", "2.1.basic_lighting.frag");
+		//auto cubeShader = Shader("2.1.basic_lighting.vert", "2.1.basic_lighting.frag");
+		auto cubeShader = Shader("standard.vert", "standard.frag");
+
 		auto mat = make_shared<Material>(cubeShader);
 		cubeRd->setMaterial(mat);
+	}
+
+	auto pointLight = scene->CreateGameObject();
+	{
+		auto light = pointLight->AddComponent<LightCom>();
+		light->lightMode() = LightMode::POINT_LIGHT;
+		auto mesh = Mesh::CubeMesh();
+		light->transform()->position() = vec3(0, 0, 0);
+		auto mf = pointLight->AddComponent<MeshFilter>();
+		mf->mesh = make_shared<Mesh>(mesh);
+
+		auto mr = pointLight->AddComponent<MeshRenderer>();
+		mr->useDefaultMaterial();
 	}
 	
 
@@ -224,17 +253,17 @@ shared_ptr<Scene> SceneMgr::testScene()
 	
 
 	// 控制离屏渲染的对象
-	/*auto renderObj = CreatePostEffectObject();
+	auto renderObj = CreatePostEffectObject();
 	auto frameCom = renderObj->AddComponent<FrameBufferCom>();
 	auto meshFilter = renderObj->AddComponent<MeshFilter>();
 	auto meshRender = renderObj->AddComponent<MeshRenderer>();
 	SetQuadMesh(meshFilter);
 	SetMat(meshRender);
-*/
-	//Texture t;
-	//t.id = frameCom->tex;
-	//t.type = "texture_diffuse";
-	//meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
+
+	Texture t;
+	t.id = frameCom->tex;
+	t.type = "texture_diffuse";
+	meshFilter->mesh->textures.push_back(move(t));	// 设置贴图为颜色缓冲
 
 	// cubemap对象
 	// rendermgr中单独渲染天空盒

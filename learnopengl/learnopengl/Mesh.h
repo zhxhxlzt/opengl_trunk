@@ -24,7 +24,15 @@ namespace yk
 		unsigned int id;
 		string type;
 		aiString path;
+		Texture() = default;
+		Texture(int id, string type, aiString path) :id(id), type(type), path(path) {}
 	};
+
+#define TEXTURE_CUBEMAP "texture_cubemap"
+#define TEXTURE_DIFFUSE "texture_diffuse"
+#define TEXTURE_SPECULAR "texture_specular"
+#define TEXTURE_NORMAL "texture_normal"
+
 	class Mesh : public Object
 	{
 		TYPE(yk::Mesh, Object)
@@ -46,6 +54,7 @@ namespace yk
 			}
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
+			unsigned int normalNr = 1;
 			unsigned int cubemapNr = 1;
 			for (unsigned int i = 0; i < textures.size(); i++)
 			{
@@ -69,6 +78,8 @@ namespace yk
 					number = to_string(diffuseNr++);
 				else if (name == "texture_specular")
 					number = to_string(specularNr++);
+				else if (name == "texture_normal")
+					number = to_string(normalNr++);
 
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, textures[i].id);
@@ -146,6 +157,8 @@ namespace yk
 				vec2(0, 0),
 				vec2(1, 0),
 				vec2(1, 1),
+				vec2(0, 0),
+				vec2(1, 1),
 				vec2(0, 1)
 			};
 
@@ -200,6 +213,7 @@ namespace yk
 			for (unsigned int i = 0; i < 36; i++)
 			{
 				mesh.indices.push_back(i);
+				mesh.vertices[i].texCoord = texcoords[i % 6];
 			}
 			return mesh;
 		}

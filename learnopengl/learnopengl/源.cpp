@@ -104,18 +104,29 @@ void testconstruct()
 
 }
 
+void testvec3()
+{
+	vec3 v = vec3(1, 2, 3);
+	cout << &v << endl;
+	cout << &v[0] << endl;
+	cout << *((float*)&v+2) << endl;
+
+	auto c = value_ptr(v);
+	cout << "data:" << endl;
+	cout << c[0] << c[1] << c[2] << endl;
+}
+
 int main()
 {
-	//testProfile();
+	//testvec3();
+
 	Application app;
 	RenderMgr::InitWindow();
 	auto scene = SceneMgr::testScene();
 	SceneMgr::load(scene);
-	//app.StartTimer(&RenderMgr::RenderUpdate);
 	app.StartTimer(&SceneMgr::UpdateScene);
 	app.run();
-	//testconstruct();
-	//testmap();
-	//getchar();
+
+	getchar();
 	return 0;
 }
